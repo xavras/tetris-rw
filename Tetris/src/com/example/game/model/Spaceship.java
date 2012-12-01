@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 
 public class Spaceship {
 	protected Wector position;
-	protected Wector speed = new Wector(0, 20);
+	protected Wector speed = new Wector(0, 5);
 	protected int tmp;
 	protected Bitmap bitmap;
 
@@ -19,15 +19,17 @@ public class Spaceship {
 	}
 
 	public void handleActionMove(int eventX, int canvasWidth) {
-		if (eventX < 50) {
+		/*if (eventX < 50) {
 			speed = new Wector(-10, 20);
 		} else if (eventX > canvasWidth - 50) {
 			speed = new Wector(10, 20);
-		}
+		}*/
+		//speed = new Wector(eventX,5);
+		position.x = eventX;
 	}
 
 	public void handleActionUP() {
-		speed = new Wector(0, 20);
+		speed = new Wector(0, 5);
 	}
 
 	public void borders(int canvasWidth, int canvasHeight) {

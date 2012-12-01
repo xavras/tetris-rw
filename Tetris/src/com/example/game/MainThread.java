@@ -25,12 +25,6 @@ public class MainThread extends Thread {
 				synchronized (surfaceHolder) {
 					gamePanel.update();
 					gamePanel.render(canvas);
-					try {
-						sleep(500);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 				}
 			} finally {
 				if (canvas != null) {
