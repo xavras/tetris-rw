@@ -41,9 +41,9 @@ public class Block{
 		float wspY = screenHeight/20;
 		
 		int xm = (int)(x/wspX);
-		if(xm < coord[0])
+		if((xm < coord[0]) && (coord[0] !=0))
 			coord[0]--;
-		else if(xm > coord[0])
+		else if((xm > coord[0]) && (coord[0] !=19))
 			coord[0]++;
 	}
 }

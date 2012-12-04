@@ -10,6 +10,7 @@ import com.example.game.model.ColisionDetector;
 import com.example.game.model.GameObject;
 import com.example.game.model.Obstacle;
 import com.example.game.model.Spaceship;
+import com.example.game.model.Tetrion;
 import com.example.game.model.Wector;
 
 import android.content.Context;
@@ -20,6 +21,7 @@ import android.graphics.Paint;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.*;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -34,9 +36,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	private Vector<Spaceship> objects = new Vector<Spaceship>();
 	private int count = -1;
 	Board board;
-	Block block;
+	Tetrion tet;
 	
-
 	public MainGamePanel(Context context) {
 		super(context);
 		getHolder().addCallback(this);
@@ -52,7 +53,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		//spaceship = new Spaceship(BitmapFactory.decodeResource(getResources(), R.drawable.food), new Wector((getWidth() / 2) - 20, 50));
 		createObjects();
 		board = new Board();
-		block = new Block(generator.nextInt(10), 0, Color.RED);
+		tet = new Tetrion(generator.nextInt(7), Color.RED);
 		thread.setRunning(true);
 		thread.start();
 	}
@@ -93,7 +94,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			int X = this.getWidth();
 			int Y = this.getHeight();
 			//objects.get(count).handleActionUP();
-			block.touchAction(x2, y2, X, Y);
+			touchAction(x2, y2, X, Y);
 			break;
 		case MotionEvent.ACTION_DOWN:
 			x1 = (int) event.getX();
@@ -109,7 +110,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		//for(Spaceship obj : objects)
 		//	obj.draw(canvas);
 		//objects.get(count).draw(canvas);
-		block.draw(canvas);
+		tet.draw(canvas);
 		board.draw(canvas);
 		//Paint paint = new Paint();
 		//paint.setColor(Color.WHITE);
@@ -132,7 +133,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		//handleColisions();
 		//destroyObjects();
 		//createObjects();
-		block.update();
+		tet.update();
 		board.update();
 		detectCollision();
 	}
@@ -179,15 +180,57 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	
 	private void detectCollision()
 	{
-		if(block.coord[1] >= 20)
+		for(int i=0; i<10; i++)
+			for(int j=0; j<20; j++)
+				if(board.board[i][j] != null)
+				{
+					if(tet.checkCollision(i, j))
+					{
+						board.addTetrion(tet);
+						createTetrion();
+						return;
+					}
+				}
+		
+		if(tet.checkGround())
 		{
-			board.board[block.coord[0]][20-1] = block;
-			block = new Block(generator.nextInt(10), 0, Color.RED);
+			board.addTetrion(tet);
+			createTetrion();
+			return;
 		}
-		else if(board.board[block.coord[0]][block.coord[1]] != null)
+	}
+	
+	private void createTetrion()
+	{
+		tet = new Tetrion(generator.nextInt(7), Color.BLUE);
+	}
+	
+	public void touchAction(int x, int y, int screenWidth, int screenHeight)
+	{
+		float wspX = screenWidth/10;
+		float wspY = screenHeight/20;
+		
+		int xm = (int)(x/wspX);
+		if((xm < tet.coord[0]+1) && (tet.checkBorders(-1)) && (isTetrionMovePossible(-1, 0)))
 		{
-			board.board[block.coord[0]][block.coord[1]-1] = block;
-			block = new Block(generator.nextInt(10), 0, Color.RED);
+			tet.move(-1, 0);
 		}
-	}	
+		else if((xm > tet.coord[0]+1) && (tet.checkBorders(+1)) && (isTetrionMovePossible(+1, 0)))
+		{
+			tet.move(+1, 0);
+		}
+	}
+	
+	private boolean isTetrionMovePossible(int x, int y)
+	{
+		for(int i=0; i<10; i++)
+			for(int j=0; j<20; j++)
+				if(board.board[i][j] != null)
+				{
+					if(tet.checkCollision(i-x, j-y) == true) return false;
+				}
+		return true;
+	}
+	
+	
 }

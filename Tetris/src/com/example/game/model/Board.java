@@ -35,5 +35,17 @@ public class Board {
 	public void update()//TODO wykrywanie calego rzedu
 	{
 	}
+	
+	public void addTetrion(Tetrion tet)
+	{
+		for(int i=0; i<4; i++)
+			for(int j=0; j<4; j++)
+				if(tet.tet[i][j] != null)
+				{
+					int x = tet.tet[i][j].coord[0];
+					int y = tet.tet[i][j].coord[1]-1;
+					board[x][y] = tet.tet[i][j];
+				}
+	}
 
 }
