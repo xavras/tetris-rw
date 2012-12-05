@@ -46,4 +46,15 @@ public class Block{
 		else if((xm > coord[0]) && (coord[0] !=19))
 			coord[0]++;
 	}
+	
+	public Block clone()
+	{
+		return new Block(coord[0], coord[1], color);
+	}
+	
+	public void move(int x, int y)
+	{
+		coord[0]+=x;
+		coord[1]+=y;
+	}
 }

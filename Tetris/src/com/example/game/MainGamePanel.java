@@ -135,7 +135,22 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		//createObjects();
 		tet.update();
 		board.update();
-		detectCollision();
+		if(isCollisionWithGround(tet) || isCollisionWithBoard(tet))
+		{
+			board.addTetrion(tet);
+			createTetrion();
+		}
+		
+		//czyszczenie linii
+		for(;;)
+		{
+			int num = board.checkFullLine();
+			if(num != -1)
+			{
+				board.clearLine(num);
+			}
+			else break;
+		}
 	}
 
 	/*public void checkCollisions() {
@@ -178,7 +193,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		}
 	}
 	
-	private void detectCollision()
+	/*private void detectCollision()
 	{
 		for(int i=0; i<10; i++)
 			for(int j=0; j<20; j++)
@@ -198,7 +213,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			createTetrion();
 			return;
 		}
-	}
+	}*/
 	
 	private void createTetrion()
 	{
@@ -210,14 +225,29 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		float wspX = screenWidth/10;
 		float wspY = screenHeight/20;
 		
-		int xm = (int)(x/wspX);
-		if((xm < tet.coord[0]+1) && (tet.checkBorders(-1)) && (isTetrionMovePossible(-1, 0)))
-		{
-			tet.move(-1, 0);
+		int xm = (int)(x/wspX);//pole gdzie zostalo klikniete
+		int ym = (int)(y/wspY);
+		
+		if((tet.isCoordSet(xm, ym)) )/*|| ((xm >= tet.coord[0])&&(xm <= tet.coord[0]+2)&&(ym >= tet.coord[1])&&(ym <= tet.coord[1]+2))*/
+		{//zostala kliknieta figura (do obrotu)
+			Tetrion tmp = cloneTetrion();
+			tmp.rotate();//obrot
+			if(!isCollisionWithBorders(tmp) && !isCollisionWithBoard(tmp) && !isCollisionWithGround(tmp))
+				tet = tmp;	
 		}
-		else if((xm > tet.coord[0]+1) && (tet.checkBorders(+1)) && (isTetrionMovePossible(+1, 0)))
+		else if(xm < tet.coord[0]+1)//klikniecie po lewej stronie
 		{
-			tet.move(+1, 0);
+			Tetrion tmp = cloneTetrion();
+			tmp.move(-1, 0);//przesuwamy w lewo
+			if(!isCollisionWithBorders(tmp) && !isCollisionWithBoard(tmp))
+				tet = tmp;
+		}
+		else if(xm > tet.coord[0]+1)//klikniecie po prawej stronie
+		{
+			Tetrion tmp = cloneTetrion();
+			tmp.move(+1, 0);
+			if(!isCollisionWithBorders(tmp) && !isCollisionWithBoard(tmp))
+				tet = tmp;
 		}
 	}
 	
@@ -232,5 +262,46 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		return true;
 	}
 	
+	private Tetrion cloneTetrion()
+	{
+		Tetrion tr = new Tetrion();
+		
+		tr.coord[0] = tet.coord[0];
+		tr.coord[1] = tet.coord[1];
+		
+		tr.type = tet.type;
+		
+		for(int i=0; i<4; i++)
+			for(int j=0; j<4; j++)
+				if(tet.tet[i][j] != null)
+				{
+					tr.tet[i][j] = tet.tet[i][j].clone();
+				}
+		
+		return tr;
+	}
 	
+	private boolean isCollisionWithBoard(Tetrion tetr)
+	{
+		for(int i=0; i<10; i++)
+			for(int j=0; j<20; j++)
+				if(board.board[i][j] != null)
+				{
+					if(tetr.checkCollision(i, j))
+					{
+						return true;
+					}
+				}
+		return false;
+	}
+	
+	private boolean isCollisionWithGround(Tetrion tetr)
+	{
+		return tetr.isCollisionWithGround();
+	}
+	
+	private boolean isCollisionWithBorders(Tetrion tetr)
+	{
+		return tetr.isCollisionWithBorders();
+	}
 }

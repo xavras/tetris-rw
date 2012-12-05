@@ -47,5 +47,43 @@ public class Board {
 					board[x][y] = tet.tet[i][j];
 				}
 	}
+	
+	public int checkFullLine()
+	{
+		boolean full = false;
+		for(int j=0; j<20; j++)
+		{
+			full = true;
+			for(int i=0; i<10; i++)
+			{
+				if(board[i][j] == null) full = false;
+			}
+			if(full == true)
+			{
+				return j;
+			}
+		}
+		
+		return -1;//nothing was finded
+	}
+	
+	public void clearLine(int num)
+	{
+		for(int j=num; j>0; j--)
+		{
+			for(int i=0; i<10; i++)
+			{
+				board[i][j] = board[i][j-1];
+				
+				if(board[i][j] != null)
+					board[i][j].move(0, 1);
+			}
+		}
+		
+		for(int i=0; i<1; i++)
+		{
+			board[i][0] = null;
+		}
+	}
 
 }
