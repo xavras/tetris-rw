@@ -14,6 +14,7 @@ import com.example.game.model.Tetrion;
 import com.example.game.model.Wector;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -38,6 +39,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	Board board;
 	Tetrion tet;
 	
+	
 	public MainGamePanel(Context context) {
 		super(context);
 		getHolder().addCallback(this);
@@ -52,8 +54,12 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	public void surfaceCreated(SurfaceHolder holder) {
 		//spaceship = new Spaceship(BitmapFactory.decodeResource(getResources(), R.drawable.food), new Wector((getWidth() / 2) - 20, 50));
 		createObjects();
+		
+		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.klocek);
+		
 		board = new Board();
-		tet = new Tetrion(generator.nextInt(7), Color.RED);
+		createTetrion();
+		Block.bitmap = bitmap;
 		thread.setRunning(true);
 		thread.start();
 	}
@@ -105,7 +111,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	}
 
 	protected void render(Canvas canvas) {
-		canvas.drawColor(Color.BLACK);
+		canvas.drawColor(Color.GRAY);
 		//spaceship.draw(canvas);
 		//for(Spaceship obj : objects)
 		//	obj.draw(canvas);
@@ -217,7 +223,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	
 	private void createTetrion()
 	{
-		tet = new Tetrion(generator.nextInt(7), Color.BLUE);
+		tet = new Tetrion(generator.nextInt(7), generator.nextInt(6));
 	}
 	
 	public void touchAction(int x, int y, int screenWidth, int screenHeight)

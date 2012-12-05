@@ -6,7 +6,15 @@ public class Block{
 	
 	public int[] coord;
 	public int color;
+	public static Bitmap bitmap;
 	//public float speed = 1.0f; //speed up to down
+	
+	public static final int BLUE = 0;
+	public static final int GREEN = 1;
+	public static final int RED= 2;
+	public static final int CYAN = 3;
+	public static final int MAGENTA = 4;
+	public static final int YELLOW = 5;
 	
 	public Block()
 	{
@@ -17,7 +25,29 @@ public class Block{
 	public Block(int x, int y, int color)
 	{
 		coord = new int[]{x, y};
-		this.color = color;
+		switch(color)
+		{
+			case BLUE:
+				this.color = Color.BLUE;
+				break;
+			case GREEN:
+				this.color = Color.GREEN;
+				break;
+			case RED:
+				this.color = Color.RED;
+				break;
+			case CYAN:
+				this.color = Color.CYAN;
+				break;
+			case MAGENTA:
+				this.color = Color.MAGENTA;
+				break;
+			case YELLOW:
+				this.color = Color.YELLOW;
+				break;
+			default:
+				this.color = Color.BLUE;	
+		}
 	}
 	
 	public void draw(Canvas canvas)
@@ -27,6 +57,10 @@ public class Block{
 		float wspY = canvas.getHeight()/20;
 		paint.setColor(color);
 		canvas.drawRect(coord[0]*wspX, coord[1]*wspY, (coord[0]+1)*wspX, (coord[1]+1)*wspY,paint);
+		paint.setAlpha(128);
+		Rect src = new Rect(0,0,bitmap.getWidth(), bitmap.getHeight());
+		RectF dst = new RectF(coord[0]*wspX, coord[1]*wspY, (coord[0]+1)*wspX, (coord[1]+1)*wspY);
+		canvas.drawBitmap(bitmap, src, dst, paint);
 		//canvas.drawRect(0,0,100,100,paint);
 	}
 	

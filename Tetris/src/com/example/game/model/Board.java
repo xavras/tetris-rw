@@ -17,17 +17,12 @@ public class Board {
 	
 	public void draw(Canvas canvas)
 	{
-		Paint paint = new Paint();
-		float wspX = canvas.getWidth()/10;
-		float wspY = canvas.getHeight()/20;
-		
 		for(int i=0; i<10; i++)
 			for(int j=0; j<20; j++)
 			{
 				if(board[i][j] != null)
 				{
-					paint.setColor(board[i][j].color);
-					canvas.drawRect(i*wspX, j*wspY, (i+1)*wspX, (j+1)*wspY,paint);
+					board[i][j].draw(canvas);
 				}
 			}
 	}
@@ -45,6 +40,7 @@ public class Board {
 					int x = tet.tet[i][j].coord[0];
 					int y = tet.tet[i][j].coord[1]-1;
 					board[x][y] = tet.tet[i][j];
+					board[x][y].move(0, -1);
 				}
 	}
 	
