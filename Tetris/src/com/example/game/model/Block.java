@@ -83,7 +83,10 @@ public class Block{
 	
 	public Block clone()
 	{
-		return new Block(coord[0], coord[1], color);
+		Block ret = new Block(coord[0], coord[1], color);
+		ret.color = color;
+		
+		return ret;
 	}
 	
 	public void move(int x, int y)

@@ -282,6 +282,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				if(tet.tet[i][j] != null)
 				{
 					tr.tet[i][j] = tet.tet[i][j].clone();
+					
 				}
 		
 		return tr;
