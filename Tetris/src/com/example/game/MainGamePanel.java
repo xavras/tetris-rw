@@ -97,10 +97,14 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		
 		switch(event.getAction()){
 		case MotionEvent.ACTION_MOVE:
-			touchActionMove(x, y);
-			isMove = true;
+			if(y < mainArea.bottom)
+			{
+				touchActionMove(x, y);
+				isMove = true;
+			}
 			break;
 		case MotionEvent.ACTION_UP:
+		case MotionEvent.ACTION_CANCEL:
 			if((y < mainArea.bottom) && (!isMove))
 			{
 				touchActionRotate();
