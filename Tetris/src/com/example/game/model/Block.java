@@ -50,16 +50,26 @@ public class Block{
 		}
 	}
 	
-	public void draw(Canvas canvas)
+	public void draw(Canvas canvas, RectF area)
 	{
 		Paint paint = new Paint();
-		float wspX = canvas.getWidth()/10;
-		float wspY = canvas.getHeight()/20;
+		float Width = area.width();
+		float Height = area.height();
+		float wspX = Width/10;
+		float wspY = Height/20;
 		paint.setColor(color);
-		canvas.drawRect(coord[0]*wspX, coord[1]*wspY, (coord[0]+1)*wspX, (coord[1]+1)*wspY,paint);
+		canvas.drawRect(
+				area.left+coord[0]*wspX, 
+				area.top+coord[1]*wspY, 
+				area.left+(coord[0]+1)*wspX, 
+				area.top+(coord[1]+1)*wspY,paint);
 		paint.setAlpha(128);
 		Rect src = new Rect(0,0,bitmap.getWidth(), bitmap.getHeight());
-		RectF dst = new RectF(coord[0]*wspX, coord[1]*wspY, (coord[0]+1)*wspX, (coord[1]+1)*wspY);
+		RectF dst = new RectF(
+				area.left+coord[0]*wspX, 
+				area.top+coord[1]*wspY, 
+				area.left+(coord[0]+1)*wspX, 
+				area.top+(coord[1]+1)*wspY);
 		canvas.drawBitmap(bitmap, src, dst, paint);
 		//canvas.drawRect(0,0,100,100,paint);
 	}

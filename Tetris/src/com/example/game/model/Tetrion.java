@@ -3,6 +3,8 @@ package com.example.game.model;
 import java.util.Random;
 
 import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.RectF;
 
 public class Tetrion {
 	public final static int BLOCK_T = 0;
@@ -53,11 +55,11 @@ public class Tetrion {
 		move(0, 1);
 	}
 	
-	public void draw(Canvas canvas)
+	public void draw(Canvas canvas, RectF area)
 	{
 		for(int i=0; i<4; i++)
 			for(int j=0; j<4; j++)
-				if(tet[i][j] != null) tet[i][j].draw(canvas);
+				if(tet[i][j] != null) tet[i][j].draw(canvas, area);
 	}
 	
 	public boolean checkBorders(int moveX)

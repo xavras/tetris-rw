@@ -19,6 +19,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.*;
@@ -38,7 +39,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	private int count = -1;
 	Board board;
 	Tetrion tet;
-	
+	public static RectF mainArea;
+	public int score = 0;
 	
 	public MainGamePanel(Context context) {
 		super(context);
@@ -97,10 +99,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		case MotionEvent.ACTION_UP:
 			x2 = (int) event.getX();
 			y2 = (int) event.getY();
-			int X = this.getWidth();
-			int Y = this.getHeight();
 			//objects.get(count).handleActionUP();
-			touchAction(x2, y2, X, Y);
+			touchAction(x2, y2);
 			break;
 		case MotionEvent.ACTION_DOWN:
 			x1 = (int) event.getX();
@@ -111,13 +111,30 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	}
 
 	protected void render(Canvas canvas) {
-		canvas.drawColor(Color.GRAY);
+		
+		if(mainArea == null)
+		{
+			mainArea = new RectF(
+					canvas.getWidth()*0.0f,
+					canvas.getHeight()*0.0f,
+					canvas.getWidth()*1.0f, 
+					canvas.getHeight()*0.9f);
+		}
+		
+		//canvas.clipRect(mainArea);
+		//canvas.drawColor(Color.GRAY);
+		Paint paint = new Paint();
+		paint.setColor(Color.GRAY);
+		
+		canvas.drawRect(mainArea, paint);
 		//spaceship.draw(canvas);
 		//for(Spaceship obj : objects)
 		//	obj.draw(canvas);
 		//objects.get(count).draw(canvas);
-		tet.draw(canvas);
-		board.draw(canvas);
+		tet.draw(canvas, mainArea);
+		board.draw(canvas, mainArea);
+		
+		drawScoreArea(canvas);
 		//Paint paint = new Paint();
 		//paint.setColor(Color.WHITE);
 		//canvas.drawRect(0, 0, 100, 100, paint);
@@ -154,9 +171,29 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			if(num != -1)
 			{
 				board.clearLine(num);
+				score+=10;
 			}
 			else break;
 		}
+	}
+	
+	public void drawScoreArea(Canvas canvas)
+	{
+		float y0 = (canvas.getHeight()-mainArea.bottom)*0.8f+mainArea.bottom;
+		float x0 = (canvas.getHeight()-mainArea.bottom)*0.2f;
+		
+		//canvas.clipRect(0, mainArea.bottom, canvas.getWidth(), canvas.getHeight());
+		Paint paint = new Paint();
+		paint.setColor(Color.BLACK);
+		canvas.drawRect(0, mainArea.bottom, canvas.getWidth(), canvas.getHeight(), paint);
+		
+		paint.setColor(Color.WHITE);
+		paint.setTextSize((canvas.getHeight() - mainArea.bottom)*0.8f);
+		paint.setAntiAlias(true);
+		
+		canvas.drawText(""+score, x0, y0, paint);
+		
+		//canvas.clipRect(0, 0, canvas.getWidth(), canvas.getHeight());
 	}
 
 	/*public void checkCollisions() {
@@ -226,13 +263,13 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		tet = new Tetrion(generator.nextInt(7), generator.nextInt(6));
 	}
 	
-	public void touchAction(int x, int y, int screenWidth, int screenHeight)
+	public void touchAction(int x, int y)
 	{
-		float wspX = screenWidth/10;
-		float wspY = screenHeight/20;
+		float wspX = mainArea.width()/10;
+		float wspY = mainArea.height()/20;
 		
-		int xm = (int)(x/wspX);//pole gdzie zostalo klikniete
-		int ym = (int)(y/wspY);
+		int xm = (int)((x-mainArea.left)/wspX);//pole gdzie zostalo klikniete
+		int ym = (int)((y-mainArea.top)/wspY);
 		
 		if((tet.isCoordSet(xm, ym)) )/*|| ((xm >= tet.coord[0])&&(xm <= tet.coord[0]+2)&&(ym >= tet.coord[1])&&(ym <= tet.coord[1]+2))*/
 		{//zostala kliknieta figura (do obrotu)

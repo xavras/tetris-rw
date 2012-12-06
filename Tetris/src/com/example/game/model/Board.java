@@ -3,6 +3,7 @@ package com.example.game.model;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 
 public class Board {
 	
@@ -15,14 +16,14 @@ public class Board {
 				board[i][j] = null;
 	}
 	
-	public void draw(Canvas canvas)
+	public void draw(Canvas canvas, RectF area)
 	{
 		for(int i=0; i<10; i++)
 			for(int j=0; j<20; j++)
 			{
 				if(board[i][j] != null)
 				{
-					board[i][j].draw(canvas);
+					board[i][j].draw(canvas, area);
 				}
 			}
 	}
