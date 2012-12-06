@@ -41,6 +41,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	Tetrion tet;
 	public static RectF mainArea;
 	public int score = 0;
+	boolean isMove = false;
 	
 	public MainGamePanel(Context context) {
 		super(context);
@@ -91,20 +92,24 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		if (event.getAction() == MotionEvent.ACTION_UP) {
 			objects.get(count).handleActionUP();
 		}*/
-		int x1 = 0, y1, x2 = 0, y2, x = 0, y;
+		int x = (int) event.getX();
+		int y = (int) event.getY();
+		
 		switch(event.getAction()){
 		case MotionEvent.ACTION_MOVE:
-			x = (int) event.getX();
-			objects.get(count).handleActionMove(x, getWidth());
+			touchActionMove(x, y);
+			isMove = true;
+			break;
 		case MotionEvent.ACTION_UP:
-			x2 = (int) event.getX();
-			y2 = (int) event.getY();
-			//objects.get(count).handleActionUP();
-			touchAction(x2, y2);
+			if((y < mainArea.bottom) && (!isMove))
+			{
+				touchActionRotate();
+			}
+			isMove = false;
 			break;
 		case MotionEvent.ACTION_DOWN:
-			x1 = (int) event.getX();
-			
+			if(y >= mainArea.bottom) touchActionSpeedUp();
+			break;
 		}		
 		
 		return true;
@@ -156,24 +161,27 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		//handleColisions();
 		//destroyObjects();
 		//createObjects();
-		tet.update();
-		board.update();
-		if(isCollisionWithGround(tet) || isCollisionWithBoard(tet))
+		synchronized(tet)
 		{
-			board.addTetrion(tet);
-			createTetrion();
-		}
-		
-		//czyszczenie linii
-		for(;;)
-		{
-			int num = board.checkFullLine();
-			if(num != -1)
+			tet.update();
+			board.update();
+			if(isCollisionWithGround(tet) || isCollisionWithBoard(tet))
 			{
-				board.clearLine(num);
-				score+=10;
+				board.addTetrion(tet);
+				createTetrion();
 			}
-			else break;
+			
+			//czyszczenie linii
+			for(;;)
+			{
+				int num = board.checkFullLine();
+				if(num != -1)
+				{
+					board.clearLine(num);
+					score+=10;
+				}
+				else break;
+			}
 		}
 	}
 	
@@ -271,14 +279,15 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		int xm = (int)((x-mainArea.left)/wspX);//pole gdzie zostalo klikniete
 		int ym = (int)((y-mainArea.top)/wspY);
 		
-		if((tet.isCoordSet(xm, ym)) )/*|| ((xm >= tet.coord[0])&&(xm <= tet.coord[0]+2)&&(ym >= tet.coord[1])&&(ym <= tet.coord[1]+2))*/
+		/*if((tet.isCoordSet(xm, ym)) )//|| ((xm >= tet.coord[0])&&(xm <= tet.coord[0]+2)&&(ym >= tet.coord[1])&&(ym <= tet.coord[1]+2))
 		{//zostala kliknieta figura (do obrotu)
 			Tetrion tmp = cloneTetrion();
 			tmp.rotate();//obrot
 			if(!isCollisionWithBorders(tmp) && !isCollisionWithBoard(tmp) && !isCollisionWithGround(tmp))
 				tet = tmp;	
 		}
-		else if(xm < tet.coord[0]+1)//klikniecie po lewej stronie
+		else */
+		if(xm < tet.coord[0]+1)//klikniecie po lewej stronie
 		{
 			Tetrion tmp = cloneTetrion();
 			tmp.move(-1, 0);//przesuwamy w lewo
@@ -291,6 +300,55 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			tmp.move(+1, 0);
 			if(!isCollisionWithBorders(tmp) && !isCollisionWithBoard(tmp))
 				tet = tmp;
+		}
+	}
+	
+	public void touchActionRotate()
+	{
+		Tetrion tmp = cloneTetrion();
+		tmp.rotate();//obrot
+		if(!isCollisionWithBorders(tmp) && !isCollisionWithBoard(tmp) && !isCollisionWithGround(tmp))
+			tet = tmp;	
+	}
+	
+	public void touchActionMove(int x, int y)
+	{
+		float wspX = mainArea.width()/10;
+		float wspY = mainArea.height()/20;
+		
+		int xm = (int)((x-mainArea.left)/wspX);//pole gdzie zostalo klikniete
+		int ym = (int)((y-mainArea.top)/wspY);
+		
+		if(xm < tet.coord[0]+1)//klikniecie po lewej stronie
+		{
+			Tetrion tmp = cloneTetrion();
+			tmp.move(-1, 0);//przesuwamy w lewo
+			if(!isCollisionWithBorders(tmp) && !isCollisionWithBoard(tmp))
+				tet = tmp;
+		}
+		else if(xm > tet.coord[0]+1)//klikniecie po prawej stronie
+		{
+			Tetrion tmp = cloneTetrion();
+			tmp.move(+1, 0);
+			if(!isCollisionWithBorders(tmp) && !isCollisionWithBoard(tmp))
+				tet = tmp;
+		}
+	}
+	
+	public void touchActionSpeedUp()
+	{
+		for(int i=0; i<3; i++)
+		{
+			synchronized(tet)
+			{
+				tet.update();
+				if(isCollisionWithGround(tet) || isCollisionWithBoard(tet))
+				{
+					board.addTetrion(tet);
+					createTetrion();
+					break;
+				}
+			}
 		}
 	}
 	
