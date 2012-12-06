@@ -15,7 +15,7 @@ public class MainThread extends Thread {
 	private boolean running;
 	private Block test;
 	private long time_now, time_last;
-	private long speed = 100;//co ile odswieza [ms]
+	private long speed = 500;//co ile odswieza [ms]
 	public long t = 0;
 
 	public MainThread(SurfaceHolder surfaceHolder, MainGamePanel gamePanel) {

@@ -165,27 +165,24 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		//handleColisions();
 		//destroyObjects();
 		//createObjects();
-		synchronized(tet)
+		tet.update();
+		board.update();
+		if(isCollisionWithGround(tet) || isCollisionWithBoard(tet))
 		{
-			tet.update();
-			board.update();
-			if(isCollisionWithGround(tet) || isCollisionWithBoard(tet))
+			board.addTetrion(tet);
+			createTetrion();
+		}
+		
+		//czyszczenie linii
+		for(;;)
+		{
+			int num = board.checkFullLine();
+			if(num != -1)
 			{
-				board.addTetrion(tet);
-				createTetrion();
+				board.clearLine(num);
+				score+=10;
 			}
-			
-			//czyszczenie linii
-			for(;;)
-			{
-				int num = board.checkFullLine();
-				if(num != -1)
-				{
-					board.clearLine(num);
-					score+=10;
-				}
-				else break;
-			}
+			else break;
 		}
 	}
 	
@@ -343,15 +340,12 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	{
 		for(int i=0; i<3; i++)
 		{
-			synchronized(tet)
+			tet.update();
+			if(isCollisionWithGround(tet) || isCollisionWithBoard(tet))
 			{
-				tet.update();
-				if(isCollisionWithGround(tet) || isCollisionWithBoard(tet))
-				{
-					board.addTetrion(tet);
-					createTetrion();
-					break;
-				}
+				board.addTetrion(tet);
+				createTetrion();
+				break;
 			}
 		}
 	}
