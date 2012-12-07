@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -20,10 +21,15 @@ import android.widget.Toast;
 
 public class Menu extends Activity {
 	
+	public static final String PREFS_NAME = "MyPrefsFile";
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		int medium = settings.getInt("mediumLevel", 2);
+		
 		// pierwszy zapis
 		File file = getBaseContext().getFileStreamPath("scores.txt");
 		if (!file.exists()) {
