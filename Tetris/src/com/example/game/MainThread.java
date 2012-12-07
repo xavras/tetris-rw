@@ -12,11 +12,12 @@ public class MainThread extends Thread {
 
 	private SurfaceHolder surfaceHolder;
 	private MainGamePanel gamePanel;
-	private boolean running;
+	private static boolean running;
 	private Block test;
 	private long time_now, time_last;
 	private long speed = 500;//co ile odswieza [ms]
 	public long t = 0;
+	
 
 	public MainThread(SurfaceHolder surfaceHolder, MainGamePanel gamePanel) {
 		super();
@@ -70,7 +71,7 @@ public class MainThread extends Thread {
 		}
 	}
 
-	public void setRunning(boolean running) {
-		this.running = running;
+	public static void setRunning(boolean r) {
+		running = r;
 	}
 }

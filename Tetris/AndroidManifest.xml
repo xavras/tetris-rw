@@ -7,6 +7,8 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="16" />
+    
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -27,6 +29,33 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="com.example.game.MAINACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="com.example.game.Levels"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.example.game.LEVELS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="com.example.game.Scores"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.example.game.SCORES" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name="com.example.game.AddScore"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="com.example.game.ADDSCORE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
