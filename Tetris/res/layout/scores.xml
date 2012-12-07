@@ -53,6 +53,12 @@
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
+        android:id="@+id/reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset scores" />
+
+    <Button
         android:id="@+id/goback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

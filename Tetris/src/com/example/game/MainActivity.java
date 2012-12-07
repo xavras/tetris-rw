@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
 		// TODO Auto-generated method stub
 		MainThread.setRunning(false);
 		super.onBackPressed();
-		mp.release();
+		mp.stop();
 	}
 	
 	@Override
@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
 		// TODO Auto-generated method stub
 		MainThread.setRunning(false);
 		super.onPause();
-		mp.release();
+		mp.stop();
 	}
 
 	@Override
