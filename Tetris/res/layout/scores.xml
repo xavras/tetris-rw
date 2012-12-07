@@ -9,6 +9,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Best Scores"
+        android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -16,6 +17,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="1st"
+        android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -23,6 +25,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="2nd"
+        android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -30,6 +33,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="3rd"
+        android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -37,6 +41,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="4th"
+        android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -44,6 +49,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="5th"
+        android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button
