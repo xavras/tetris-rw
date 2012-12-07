@@ -42,12 +42,19 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	public static RectF mainArea;
 	public int score = 0;
 	boolean isMove = false;
+	SoundPool sp, sp1;
+	int flip, coins;
+	Context mycontext;
 	
 	public MainGamePanel(Context context) {
 		super(context);
 		getHolder().addCallback(this);
 		setFocusable(true);
 		thread = new MainThread(getHolder(), this);
+		sp = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+		sp1 = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
+		flip = sp.load(context, R.raw.flip, 1);
+		coins = sp1.load(context, R.raw.coins, 1);
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -117,7 +124,11 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			{
 				if(x <= x_rotate) touchActionSpeedUp();
 			
-				else if(x > x_rotate) touchActionRotate();
+				else if(x > x_rotate)
+				{
+					touchActionRotate();
+					sp.play(flip, 1, 1, 0, 0, 1);
+				}
 			}
 			break;
 		}		
@@ -186,6 +197,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			if(num != -1)
 			{
 				board.clearLine(num);
+				sp1.play(coins, 1, 1, 0, 0, 1);
 				score+=10;
 			}
 			else break;
