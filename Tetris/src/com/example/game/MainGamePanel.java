@@ -45,6 +45,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	SoundPool sp, sp1;
 	int flip, coins;
 	Context mycontext;
+	int MAX_SCORE = 50;
+	boolean isGameOver = false;
 	
 	public MainGamePanel(Context context) {
 		super(context);
@@ -166,7 +168,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		//canvas.drawRect(0, 0, 100, 100, paint);
 	}
 
-	public void update() {
+	public boolean update() {
+		
+		boolean ret = true;
 		//spaceship.borders(getWidth(), getHeight());
 		//spaceship.update();
 		//objects.get(count).borders(getWidth(), getHeight());
@@ -186,7 +190,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		board.update();
 		if(isCollisionWithGround(tet) || isCollisionWithBoard(tet))
 		{
-			board.addTetrion(tet);
+			ret = board.addTetrion(tet);
+			if(ret == false) isGameOver = true;
 			createTetrion();
 		}
 		
@@ -202,6 +207,10 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			}
 			else break;
 		}
+		
+		if(score > MAX_SCORE) ret = false;
+		
+		return ret;
 	}
 	
 	public void drawScoreArea(Canvas canvas)
@@ -421,5 +430,11 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	private boolean isCollisionWithBorders(Tetrion tetr)
 	{
 		return tetr.isCollisionWithBorders();
+	}
+	
+	public void resetGame()
+	{
+		board = new Board();
+		createTetrion();
 	}
 }

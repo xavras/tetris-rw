@@ -54,7 +54,20 @@ public class MainThread extends Thread {
 						time_last = time_now;
 						
 						//TUTAJ BEDA UPDATE'Y, ZALEZNE OD CZASU
-						gamePanel.update();
+						boolean kontynuuj = gamePanel.update();
+						if(kontynuuj == false)
+						{
+							gamePanel.resetGame();
+							if(gamePanel.isGameOver)//koniec gry, bo sie plansza zapchala
+							{
+								gamePanel.score = 0;
+								speed = 500;
+							}
+							else//nastepny poziom
+							{
+								speed -= speed*0.2; //przyspieszenie o 20%
+							}
+						}
 					}
 
 					gamePanel.render(canvas);

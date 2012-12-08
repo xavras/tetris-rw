@@ -32,7 +32,7 @@ public class Board {
 	{
 	}
 	
-	public void addTetrion(Tetrion tet)
+	public boolean addTetrion(Tetrion tet)
 	{
 		for(int i=0; i<4; i++)
 			for(int j=0; j<4; j++)
@@ -40,9 +40,11 @@ public class Board {
 				{
 					int x = tet.tet[i][j].coord[0];
 					int y = tet.tet[i][j].coord[1]-1;
+					if(y < 0) return false;
 					board[x][y] = tet.tet[i][j];
 					board[x][y].move(0, -1);
 				}
+		return true;
 	}
 	
 	public int checkFullLine()
