@@ -46,6 +46,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	int flip, coins;
 	Context mycontext;
 	int MAX_SCORE = 50;
+	public int level = 1;
 	boolean isGameOver = false;
 	
 	public MainGamePanel(Context context) {
@@ -208,7 +209,11 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			else break;
 		}
 		
-		if(score > MAX_SCORE) ret = false;
+		if(score >= MAX_SCORE*level)
+		{
+			ret = false;
+			level++;
+		}
 		
 		return ret;
 	}
@@ -436,5 +441,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	{
 		board = new Board();
 		createTetrion();
+		isGameOver = false;
 	}
 }

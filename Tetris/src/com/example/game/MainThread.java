@@ -62,6 +62,7 @@ public class MainThread extends Thread {
 							{
 								gamePanel.score = 0;
 								speed = 500;
+								gamePanel.level = 1;
 							}
 							else//nastepny poziom
 							{
