@@ -57,17 +57,20 @@ public class MainThread extends Thread {
 						boolean kontynuuj = gamePanel.update();
 						if(kontynuuj == false)
 						{
-							gamePanel.resetGame();
 							if(gamePanel.isGameOver)//koniec gry, bo sie plansza zapchala
 							{
 								gamePanel.score = 0;
 								speed = 500;
 								gamePanel.level = 1;
+								this.interrupt();
+								setRunning(false);
+								return;
 							}
 							else//nastepny poziom
 							{
 								speed -= speed*0.2; //przyspieszenie o 20%
 							}
+							gamePanel.resetGame();
 						}
 					}
 

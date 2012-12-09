@@ -35,7 +35,7 @@ import com.example.game.R;
 public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback {
 
 	private static Random generator = new Random();
-	private MainThread thread;
+	public MainThread thread;
 	private Spaceship spaceship;
 	private Vector<Spaceship> objects = new Vector<Spaceship>();
 	private int count = -1;
@@ -50,7 +50,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	int MAX_SCORE = 50;
 	public int level = 1;
 	boolean isGameOver = false;
-	Scores s;
+	Scores s = new Scores();
 	public static final String PREFS_NAME2 = "MyPrefsFile2";
 	SharedPreferences.Editor editor;
 	
@@ -75,8 +75,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		
 		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.klocek);
 		
-		board = new Board();
-		createTetrion();
+		if(board == null) board = new Board();
+		if(tet == null) createTetrion();
 		Block.bitmap = bitmap;
 		thread.setRunning(true);
 		thread.start();
@@ -200,21 +200,25 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			if(ret == false) {
 				isGameOver = true;
 				
+				
+				/*** HIGH SCORE *****/
 				//SharedPreferences scoresSetting = mycontext.getSharedPreferences(PREFS_NAME2, 0);
 			    //editor = scoresSetting.edit();
 				thread.setRunning(false);
-				if(score > s.players[4].score){
+				//s.init();
+				if(score >= 0/*s.players[4].score*/){
 					//editor.putInt("scoredata", score);
 					//editor.commit();
 					Intent in = new Intent();
-					in.setClass(mycontext, AddScore.class);
-					mycontext.startActivity(in);
+					in.setClass(this.getContext(), AddScore.class);
+					this.getContext().startActivity(in);
 				}
 				else{
 					Intent in = new Intent();
-					in.setClass(mycontext,Scores.class);
-					mycontext.startActivity(in);
+					in.setClass(this.getContext(),Scores.class);
+					this.getContext().startActivity(in);
 				}
+				/********************/
 			}
 			createTetrion();
 		}

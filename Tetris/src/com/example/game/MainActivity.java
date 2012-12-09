@@ -14,13 +14,14 @@ import android.view.WindowManager;
 public class MainActivity extends Activity {
 
 	MediaPlayer mp;
+	MainGamePanel gamePanel;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(new MainGamePanel(this));
+		setContentView(gamePanel = new MainGamePanel(this));
 		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		mp = MediaPlayer.create(this, R.raw.background);
 		mp.start();
@@ -32,6 +33,7 @@ public class MainActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onBackPressed();
 		mp.stop();
+		gamePanel.thread.setRunning(false);
 	}
 	
 	@Override
@@ -39,12 +41,14 @@ public class MainActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onPause();
 		mp.stop();
+		gamePanel.thread.setRunning(false);
 	}
 
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
+		gamePanel.thread.setRunning(true);
 	}
 	
 	
