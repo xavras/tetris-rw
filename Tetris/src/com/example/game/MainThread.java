@@ -13,7 +13,7 @@ public class MainThread extends Thread {
 
 	private SurfaceHolder surfaceHolder;
 	private MainGamePanel gamePanel;
-	private static boolean running;
+	private boolean running;
 	private Block test;
 	private long time_now, time_last;
 	private long speed = 500;//co ile odswieza [ms]
@@ -85,7 +85,7 @@ public class MainThread extends Thread {
 		}
 	}
 
-	public static void setRunning(boolean r) {
+	public void setRunning(boolean r) {
 		running = r;
 	}
 }
