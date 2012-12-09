@@ -58,9 +58,10 @@ public class AddScore extends Activity{
 		OutputStreamWriter osw = new OutputStreamWriter(fos);
 		Player inGame = new Player();
 		inGame.name = et.getText().toString();
-		SharedPreferences scoresSetting = getSharedPreferences(MainGamePanel.PREFS_NAME, 0);
-		int data = scoresSetting.getInt("scoredata", 0);
-		inGame.score = data;
+		//SharedPreferences scoresSetting = getSharedPreferences(MainGamePanel.PREFS_NAME2, 0);
+		//int data = scoresSetting.getInt("scoredata", 0);
+		//inGame.score = data;
+		inGame.score = MainGamePanel.score;
 		Player[] newPlayers = null;
 		for(int i = 0; i < 5; i++)
 			newPlayers[i] = s.players[i];
