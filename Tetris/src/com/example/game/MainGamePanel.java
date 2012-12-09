@@ -202,6 +202,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				
 				//SharedPreferences scoresSetting = mycontext.getSharedPreferences(PREFS_NAME2, 0);
 			    //editor = scoresSetting.edit();
+				thread.setRunning(false);
 				if(score > s.players[4].score){
 					//editor.putInt("scoredata", score);
 					//editor.commit();
