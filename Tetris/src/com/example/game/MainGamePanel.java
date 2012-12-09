@@ -42,7 +42,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	Board board;
 	Tetrion tet;
 	public static RectF mainArea;
-	public int score = 0;
+	public static int score = 0;
 	boolean isMove = false;
 	SoundPool sp, sp1;
 	int flip, coins;
@@ -51,7 +51,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	public int level = 1;
 	boolean isGameOver = false;
 	Scores s;
-	public static final String PREFS_NAME = "MyPrefsFile";
+	public static final String PREFS_NAME2 = "MyPrefsFile2";
 	SharedPreferences.Editor editor;
 	
 	public MainGamePanel(Context context) {
@@ -200,14 +200,20 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			if(ret == false) {
 				isGameOver = true;
 				
-				SharedPreferences settings = mycontext.getSharedPreferences(Menu.PREFS_NAME, 0);
-			    editor = settings.edit();
-				//if(score > s.players[4].score){
+				//SharedPreferences scoresSetting = mycontext.getSharedPreferences(PREFS_NAME2, 0);
+			    //editor = scoresSetting.edit();
+				if(score > s.players[4].score){
 					//editor.putInt("scoredata", score);
-					//Intent in = new Intent();
-					//in.setClass(mycontext, AddScore.class);
-					//mycontext.startActivity(in);
-				//}
+					//editor.commit();
+					Intent in = new Intent();
+					in.setClass(mycontext, AddScore.class);
+					mycontext.startActivity(in);
+				}
+				else{
+					Intent in = new Intent();
+					in.setClass(mycontext,Scores.class);
+					mycontext.startActivity(in);
+				}
 			}
 			createTetrion();
 		}
