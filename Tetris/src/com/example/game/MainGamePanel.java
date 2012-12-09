@@ -14,6 +14,8 @@ import com.example.game.model.Tetrion;
 import com.example.game.model.Wector;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -48,6 +50,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	int MAX_SCORE = 50;
 	public int level = 1;
 	boolean isGameOver = false;
+	Scores s;
+	public static final String PREFS_NAME = "MyPrefsFile";
+	SharedPreferences.Editor editor;
 	
 	public MainGamePanel(Context context) {
 		super(context);
@@ -192,7 +197,18 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		if(isCollisionWithGround(tet) || isCollisionWithBoard(tet))
 		{
 			ret = board.addTetrion(tet);
-			if(ret == false) isGameOver = true;
+			if(ret == false) {
+				isGameOver = true;
+				
+				SharedPreferences settings = mycontext.getSharedPreferences(Menu.PREFS_NAME, 0);
+			    editor = settings.edit();
+				//if(score > s.players[4].score){
+					//editor.putInt("scoredata", score);
+					//Intent in = new Intent();
+					//in.setClass(mycontext, AddScore.class);
+					//mycontext.startActivity(in);
+				//}
+			}
 			createTetrion();
 		}
 		

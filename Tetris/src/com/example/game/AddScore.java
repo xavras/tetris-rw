@@ -9,6 +9,7 @@ import java.util.Arrays;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -57,7 +58,9 @@ public class AddScore extends Activity{
 		OutputStreamWriter osw = new OutputStreamWriter(fos);
 		Player inGame = new Player();
 		inGame.name = et.getText().toString();
-		//trzeba przypisac inGame.score = wynik z gry
+		SharedPreferences scoresSetting = getSharedPreferences(MainGamePanel.PREFS_NAME, 0);
+		int data = scoresSetting.getInt("scoredata", 0);
+		inGame.score = data;
 		Player[] newPlayers = null;
 		for(int i = 0; i < 5; i++)
 			newPlayers[i] = s.players[i];

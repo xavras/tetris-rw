@@ -2,6 +2,7 @@ package com.example.game;
 
 import com.example.game.model.*;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,7 +18,6 @@ public class MainThread extends Thread {
 	private long time_now, time_last;
 	private long speed = 500;//co ile odswieza [ms]
 	public long t = 0;
-	
 
 	public MainThread(SurfaceHolder surfaceHolder, MainGamePanel gamePanel) {
 		super();
