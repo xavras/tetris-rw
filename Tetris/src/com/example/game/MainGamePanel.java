@@ -1,5 +1,6 @@
 package com.example.game;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.Vector;
 
@@ -25,6 +26,7 @@ import android.graphics.RectF;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.*;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -50,11 +52,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	int MAX_SCORE = 50;
 	public int level = 1;
 	boolean isGameOver = false;
-	Scores s = new Scores();
-	public static final String PREFS_NAME2 = "MyPrefsFile2";
-	SharedPreferences.Editor editor;
+	Scores s;
 	
-	public MainGamePanel(Context context) {
+	public MainGamePanel(Context context) throws IOException {
 		super(context);
 		getHolder().addCallback(this);
 		setFocusable(true);
@@ -63,6 +63,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		sp1 = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
 		flip = sp.load(context, R.raw.flip, 1);
 		coins = sp1.load(context, R.raw.coins, 1);
+		s = new Scores();
+		s.readScores();
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -202,13 +204,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				
 				
 				/*** HIGH SCORE *****/
-				//SharedPreferences scoresSetting = mycontext.getSharedPreferences(PREFS_NAME2, 0);
-			    //editor = scoresSetting.edit();
-				thread.setRunning(false);
+				
 				//s.init();
-				if(score >= 0/*s.players[4].score*/){
-					//editor.putInt("scoredata", score);
-					//editor.commit();
+				if(score > s.players[4].score){
 					Intent in = new Intent();
 					in.setClass(this.getContext(), AddScore.class);
 					this.getContext().startActivity(in);
@@ -218,6 +216,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 					in.setClass(this.getContext(),Scores.class);
 					this.getContext().startActivity(in);
 				}
+				Log.i("tag", s.players[4].name);
+				thread.setRunning(false);
 				/********************/
 			}
 			createTetrion();

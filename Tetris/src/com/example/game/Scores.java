@@ -27,6 +27,18 @@ public class Scores extends Activity implements OnClickListener{
 	String[][] tabb = new String[5][2];
 	Player[] players = new Player[5];
 	
+	public Scores(){
+		for(int i = 0; i < players.length; i++)
+			players[i] = new Player();
+		for(int i = 0; i < 5; i++)
+			tab[i] = new String();
+		for(int i = 0; i < 5; i++){
+			tabb[i] = new String[2];
+			for(int j = 0; j < 2; j++)
+				tabb[i][j] = new String();
+		}
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -40,19 +52,18 @@ public class Scores extends Activity implements OnClickListener{
 		tv3 = (TextView)findViewById(R.id.textView4);
 		tv4 = (TextView)findViewById(R.id.textView5);
 		tv5 = (TextView)findViewById(R.id.textView6);
-		for(int i = 0; i < players.length; i++)
-			players[i] = new Player();
+		
 		try {
-			tab = readScores();
+			readScores();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for(int i = 0; i < tab.length; i++){
+		/*for(int i = 0; i < tab.length; i++){
 			tabb[i] = tab[i].split(" ");
 			players[i].name = tabb[i][0];
 			players[i].score = Integer.parseInt(tabb[i][1]);
-		}
+		}*/
 		
 		tv1.setText(players[0].name + " " + players[0].score);
 		tv2.setText(players[1].name + " " + players[1].score);
@@ -87,15 +98,21 @@ public class Scores extends Activity implements OnClickListener{
 	}
 	
 	
-	public String[] readScores() throws IOException{
+	public void readScores() throws IOException{
 		FileInputStream fis = openFileInput(FILENAME);
 		InputStreamReader isr = new InputStreamReader(fis);
-		int i;
+		int j;
 		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-		while((i = isr.read()) != -1){
-			bytes.write(i);
+		while((j = isr.read()) != -1){
+			bytes.write(j);
 		}
-		return bytes.toString().split("\n");
+		tab = bytes.toString().split("\n");
+		
+		for(int i = 0; i < tab.length; i++){
+			tabb[i] = tab[i].split(" ");
+			players[i].name = tabb[i][0];
+			players[i].score = Integer.parseInt(tabb[i][1]);
+		}
 	}
 
 

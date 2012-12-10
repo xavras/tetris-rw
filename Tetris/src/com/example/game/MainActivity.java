@@ -1,6 +1,7 @@
 package com.example.game;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import android.app.Activity;
@@ -21,7 +22,12 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		setContentView(gamePanel = new MainGamePanel(this));
+		try {
+			setContentView(gamePanel = new MainGamePanel(this));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		mp = MediaPlayer.create(this, R.raw.background);
 		mp.start();
@@ -34,6 +40,7 @@ public class MainActivity extends Activity {
 		super.onBackPressed();
 		mp.stop();
 		gamePanel.thread.setRunning(false);
+		finish();
 	}
 	
 	@Override
@@ -42,6 +49,7 @@ public class MainActivity extends Activity {
 		super.onPause();
 		mp.stop();
 		gamePanel.thread.setRunning(false);
+		finish();
 	}
 
 	@Override
