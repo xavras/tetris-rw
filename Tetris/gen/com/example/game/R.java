@@ -19,27 +19,26 @@ public final class R {
         public static final int tlo=0x7f020005;
     }
     public static final class id {
-        public static final int Levels=0x7f080012;
-        public static final int Quit=0x7f080014;
-        public static final int Scores=0x7f080013;
-        public static final int Start=0x7f080011;
-        public static final int back=0x7f080007;
+        public static final int Levels=0x7f080011;
+        public static final int Quit=0x7f080013;
+        public static final int Scores=0x7f080012;
+        public static final int Start=0x7f080010;
+        public static final int back=0x7f080006;
         public static final int button1=0x7f080001;
-        public static final int button2=0x7f080002;
         public static final int editText1=0x7f080000;
-        public static final int goback=0x7f08000f;
-        public static final int menu_settings=0x7f080010;
-        public static final int rEasy=0x7f080004;
-        public static final int rHard=0x7f080006;
-        public static final int rMedium=0x7f080005;
-        public static final int reset=0x7f08000e;
-        public static final int rgAnswers=0x7f080003;
-        public static final int textView1=0x7f080008;
-        public static final int textView2=0x7f080009;
-        public static final int textView3=0x7f08000a;
-        public static final int textView4=0x7f08000b;
-        public static final int textView5=0x7f08000c;
-        public static final int textView6=0x7f08000d;
+        public static final int goback=0x7f08000e;
+        public static final int menu_settings=0x7f08000f;
+        public static final int rEasy=0x7f080003;
+        public static final int rHard=0x7f080005;
+        public static final int rMedium=0x7f080004;
+        public static final int reset=0x7f08000d;
+        public static final int rgAnswers=0x7f080002;
+        public static final int textView1=0x7f080007;
+        public static final int textView2=0x7f080008;
+        public static final int textView3=0x7f080009;
+        public static final int textView4=0x7f08000a;
+        public static final int textView5=0x7f08000b;
+        public static final int textView6=0x7f08000c;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

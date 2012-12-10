@@ -64,7 +64,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		flip = sp.load(context, R.raw.flip, 1);
 		coins = sp1.load(context, R.raw.coins, 1);
 		s = new Scores();
-		s.readScores();
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -82,6 +81,13 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		Block.bitmap = bitmap;
 		thread.setRunning(true);
 		thread.start();
+		
+		try
+		{
+			s.readScores();
+		}
+		catch(Exception e)
+		{e.printStackTrace();}
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {

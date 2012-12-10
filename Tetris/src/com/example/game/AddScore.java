@@ -1,8 +1,11 @@
 package com.example.game;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.Arrays;
 
@@ -28,12 +31,11 @@ public class AddScore extends Activity{
 	
 	public AddScore() throws IOException{
 		s = new Scores();
-		s.readScores();
 		inGame = new Player();
 		for(int i = 0; i < 6; i++)
 			newPlayers[i] = new Player();
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -58,6 +60,14 @@ public class AddScore extends Activity{
 				finish();
 			}
 		});
+		try
+		{
+			s.readScores();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	public void writeScore() throws IOException{
