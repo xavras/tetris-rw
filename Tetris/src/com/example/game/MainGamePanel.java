@@ -6,13 +6,9 @@ import java.util.Vector;
 
 import com.example.game.model.Block;
 import com.example.game.model.Board;
-import com.example.game.model.Gold;
-import com.example.game.model.ColisionDetector;
-import com.example.game.model.GameObject;
-import com.example.game.model.Obstacle;
-import com.example.game.model.Spaceship;
+
 import com.example.game.model.Tetrion;
-import com.example.game.model.Wector;
+
 
 import android.content.Context;
 import android.content.Intent;
@@ -38,9 +34,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
 	private static Random generator = new Random();
 	public MainThread thread;
-	private Spaceship spaceship;
-	private Vector<Spaceship> objects = new Vector<Spaceship>();
-	private int count = -1;
 	Board board;
 	Tetrion tet;
 	public static RectF mainArea;
@@ -70,24 +63,22 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		// TODO Auto-generated method stub
 	}
 
-	public void surfaceCreated(SurfaceHolder holder) {
-		//spaceship = new Spaceship(BitmapFactory.decodeResource(getResources(), R.drawable.food), new Wector((getWidth() / 2) - 20, 50));
-		createObjects();
-		
+	public void surfaceCreated(SurfaceHolder holder) {		
 		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.klocek);
 		
 		if(board == null) board = new Board();
 		if(tet == null) createTetrion();
 		Block.bitmap = bitmap;
-		thread.setRunning(true);
-		thread.start();
-		
 		try
 		{
 			s.readScores();
+			Log.i("taggg", s.players[4].name);
+
 		}
 		catch(Exception e)
 		{e.printStackTrace();}
+		thread.setRunning(true);
+		thread.start();
 	}
 
 	public void surfaceDestroyed(SurfaceHolder holder) {
@@ -101,20 +92,11 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		}
 	}
 
-	private void createObjects() {
-		objects.add(new Spaceship(BitmapFactory.decodeResource(getResources(), R.drawable.food), new Wector((getWidth()/2)-20, 50)));	
-		count++;
-		//object = new Spaceship(BitmapFactory.decodeResource(getResources(), R.drawable.food), new Wector((getWidth()/2)-20, 50));
-	}
+
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		/*if (/*event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
-			objects.get(count).handleActionMove((int) event.getX(), getWidth());
-		}
-		if (event.getAction() == MotionEvent.ACTION_UP) {
-			objects.get(count).handleActionUP();
-		}*/
+		
 		int x = (int) event.getX();
 		int y = (int) event.getY();
 		float y_rotate = getHeight()*0.1f;
@@ -125,16 +107,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			if((y < mainArea.bottom))
 			{
 				touchActionMove(x, y);
-				//isMove = true;
 			}
 			break;
-		/*case MotionEvent.ACTION_UP:
-			if((y < mainArea.bottom) && (!isMove))
-			{
-				touchActionRotate();
-			}
-			isMove = false;
-			break;*/
+		
 		case MotionEvent.ACTION_DOWN:
 			if(y >= mainArea.bottom)
 			{
@@ -163,43 +138,19 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 					canvas.getHeight()*0.9f);
 		}
 		
-		//canvas.clipRect(mainArea);
-		//canvas.drawColor(Color.GRAY);
 		Paint paint = new Paint();
 		paint.setColor(Color.GRAY);
 		
 		canvas.drawRect(mainArea, paint);
-		//spaceship.draw(canvas);
-		//for(Spaceship obj : objects)
-		//	obj.draw(canvas);
-		//objects.get(count).draw(canvas);
 		tet.draw(canvas, mainArea);
 		board.draw(canvas, mainArea);
 		
 		drawScoreArea(canvas);
-		//Paint paint = new Paint();
-		//paint.setColor(Color.WHITE);
-		//canvas.drawRect(0, 0, 100, 100, paint);
 	}
 
 	public boolean update() {
 		
 		boolean ret = true;
-		//spaceship.borders(getWidth(), getHeight());
-		//spaceship.update();
-		//objects.get(count).borders(getWidth(), getHeight());
-		//objects.get(count).update();
-		//updateObjects();
-		//if(objects.get(count).getPosition().y == getHeight()-50){
-			//destroyObjects();
-		//	createObjects();
-		//}
-		//spaceship.update(System.currentTimeMillis(), getWidth());
-		//updateObjects();
-		//checkCollisions();
-		//handleColisions();
-		//destroyObjects();
-		//createObjects();
 		tet.update();
 		board.update();
 		if(isCollisionWithGround(tet) || isCollisionWithBoard(tet))
@@ -210,7 +161,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				
 				
 				/*** HIGH SCORE *****/
-				
+				Log.i("tag", s.players[4].name);
 				//s.init();
 				if(score > s.players[4].score){
 					Intent in = new Intent();
@@ -222,7 +173,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 					in.setClass(this.getContext(),Scores.class);
 					this.getContext().startActivity(in);
 				}
-				Log.i("tag", s.players[4].name);
+				
 				thread.setRunning(false);
 				/********************/
 			}
@@ -256,7 +207,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		float y0 = (canvas.getHeight()-mainArea.bottom)*0.8f+mainArea.bottom;
 		float x0 = (canvas.getHeight()-mainArea.bottom)*0.2f;
 		
-		//canvas.clipRect(0, mainArea.bottom, canvas.getWidth(), canvas.getHeight());
 		Paint paint = new Paint();
 		paint.setColor(Color.BLACK);
 		canvas.drawRect(0, mainArea.bottom, canvas.getWidth(), canvas.getHeight(), paint);
@@ -267,70 +217,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		
 		canvas.drawText(""+score, x0, y0, paint);
 		
-		//canvas.clipRect(0, 0, canvas.getWidth(), canvas.getHeight());
 	}
 
-	/*public void checkCollisions() {
-		for (Spaceship obstacle : objects) {
-			if (ColisionDetector.isCollision(objects.get(count).getBoundingRect(), obstacle.getBoundingRect())) {
-				obstacle.setIsTouched(true);
-			}
-		}
-	}*/
-
-	/*public void handleColisions() {
-		for (int i = 0; i < objects.size();) {
-			Spaceship obstacle = objects.get(i);
-			if (obstacle.getIsTouched()) {
-				if (obstacle instanceof Gold) {
-					// TODO
-				} else if (obstacle instanceof Obstacle) {
-					// TODO
-				}
-				objects.remove(i);
-			} else {
-				i++;
-			}
-		}
-	}*/
-
-	public void destroyObjects() {
-		for (int i = 0; i < objects.size();) {
-			if (objects.elementAt(i).getPosition().y >= getHeight() - 30) {
-				objects.remove(i);
-			} else {
-				i++;
-			}
-		}
-	}
-
-	public void updateObjects() {
-		for (Spaceship obstacle : objects) {
-			obstacle.update();
-		}
-	}
 	
-	/*private void detectCollision()
-	{
-		for(int i=0; i<10; i++)
-			for(int j=0; j<20; j++)
-				if(board.board[i][j] != null)
-				{
-					if(tet.checkCollision(i, j))
-					{
-						board.addTetrion(tet);
-						createTetrion();
-						return;
-					}
-				}
-		
-		if(tet.checkGround())
-		{
-			board.addTetrion(tet);
-			createTetrion();
-			return;
-		}
-	}*/
 	
 	private void createTetrion()
 	{
@@ -345,14 +234,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		int xm = (int)((x-mainArea.left)/wspX);//pole gdzie zostalo klikniete
 		int ym = (int)((y-mainArea.top)/wspY);
 		
-		/*if((tet.isCoordSet(xm, ym)) )//|| ((xm >= tet.coord[0])&&(xm <= tet.coord[0]+2)&&(ym >= tet.coord[1])&&(ym <= tet.coord[1]+2))
-		{//zostala kliknieta figura (do obrotu)
-			Tetrion tmp = cloneTetrion();
-			tmp.rotate();//obrot
-			if(!isCollisionWithBorders(tmp) && !isCollisionWithBoard(tmp) && !isCollisionWithGround(tmp))
-				tet = tmp;	
-		}
-		else */
 		if(xm < tet.coord[0]+1)//klikniecie po lewej stronie
 		{
 			Tetrion tmp = cloneTetrion();

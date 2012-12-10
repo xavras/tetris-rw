@@ -59,11 +59,6 @@ public class Scores extends Activity implements OnClickListener{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		/*for(int i = 0; i < tab.length; i++){
-			tabb[i] = tab[i].split(" ");
-			players[i].name = tabb[i][0];
-			players[i].score = Integer.parseInt(tabb[i][1]);
-		}*/
 		
 		tv1.setText(players[0].name + " " + players[0].score);
 		tv2.setText(players[1].name + " " + players[1].score);

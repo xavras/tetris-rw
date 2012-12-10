@@ -23,7 +23,6 @@ public class MainThread extends Thread {
 		super();
 		this.surfaceHolder = surfaceHolder;
 		this.gamePanel = gamePanel;
-		//test = new Block(0, 0);
 		time_now = time_last = System.currentTimeMillis();
 	}
 
@@ -35,8 +34,6 @@ public class MainThread extends Thread {
 			try {
 				canvas = this.surfaceHolder.lockCanvas();
 				synchronized (surfaceHolder) {
-					//gamePanel.update();
-					//gamePanel.render(canvas);
 					
 					//ustawanie czasu
 					time_now = System.currentTimeMillis();
@@ -75,9 +72,6 @@ public class MainThread extends Thread {
 					}
 
 					gamePanel.render(canvas);
-					//Paint paint = new Paint();
-					//paint.setColor(Color.GREEN);
-					//canvas.drawRect(0, 0, 100, 100, paint);
 					
 				}
 			} finally {

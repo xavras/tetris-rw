@@ -43,13 +43,23 @@ public class AddScore extends Activity{
 		setContentView(R.layout.addscore);
 		et = (EditText)findViewById(R.id.editText1);
 		b1 = (Button)findViewById(R.id.button1);
+		try
+		{
+			s.readScores();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		b1.setOnClickListener(new View.OnClickListener() {
+			
 			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				try {
 					writeScore();
+					Log.i("tagg", s.players[4].name);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -60,14 +70,6 @@ public class AddScore extends Activity{
 				finish();
 			}
 		});
-		try
-		{
-			s.readScores();
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
 	
 	public void writeScore() throws IOException{
