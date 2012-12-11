@@ -1,79 +1,76 @@
 package com.example.game;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.app.ListActivity;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
-public class Levels extends Activity implements OnClickListener, OnCheckedChangeListener{
+public class Levels extends ListActivity {
 
-	RadioGroup rg;
-	RadioButton easy, medium, hard;
-	Button b;
-	SharedPreferences.Editor editor;
-	
+	static final String[] levels = new String[] { "Newbie", "Beginner",
+			"Novice", "Trained", "Skilled", "Talented", "Professional",
+			"Expert", "Master" };
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.levels);
-		rg = (RadioGroup)findViewById(R.id.rgAnswers);
-		easy = (RadioButton)findViewById(R.id.rEasy);
-		medium = (RadioButton)findViewById(R.id.rMedium);
-		hard = (RadioButton)findViewById(R.id.rHard);
-		medium.setChecked(true);
-		b = (Button)findViewById(R.id.back);
-		rg.setOnCheckedChangeListener(this);
-		b.setOnClickListener(this);
-		
-		
-		SharedPreferences settings = getSharedPreferences(Menu.PREFS_NAME, 0);
-	    editor = settings.edit();
-	    
 
-		switch(settings.getInt("level", 2)){
-		case 1:
-			easy.setChecked(true);
-			break;
-		case 2:
-			medium.setChecked(true);
-			break;
-		case 3:
-			hard.setChecked(true);
-			break;
-		}
+		setListAdapter(new ArrayAdapter<String>(this, R.layout.levels, levels));
+
+		ListView lv = getListView();
+		lv.setTextFilterEnabled(true);
+
+		lv.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				// TODO Auto-generated method stub
+				switch (arg2) {
+				case 0: {
+
+					break;
+				}
+				case 1: {
+
+					break;
+				}
+				case 2: {
+
+					break;
+				}
+				case 3: {
+
+					break;
+				}
+				case 4: {
+
+					break;
+				}
+				case 5: {
+
+					break;
+				}
+				case 6: {
+
+					break;
+				}
+				case 7: {
+
+					break;
+				}
+				case 8: {
+
+					break;
+				}
+				}
+			}
+
+		});
 	}
-
-	@Override
-	public void onCheckedChanged(RadioGroup group, int checkedId) {
-		// TODO Auto-generated method stub
-		switch(checkedId){
-		case R.id.rEasy:
-			editor.putInt("level", 1);
-			editor.commit();
-			break;
-		case R.id.rMedium:
-			editor.putInt("level", 2);
-			editor.commit();
-			break;
-		case R.id.rHard:
-			editor.putInt("level", 3);
-			editor.commit();
-			break;
-		}
-	}
-
-	@Override
-	public void onClick(View arg0) {
-		finish();
-	}
-
-	
 }
