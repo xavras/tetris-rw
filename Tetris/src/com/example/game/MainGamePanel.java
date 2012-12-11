@@ -177,6 +177,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			if(num != -1)
 			{
 				board.clearLine(num);
+				Vibrator v = (Vibrator)getContext().getSystemService(Context.VIBRATOR_SERVICE);
+				v.vibrate(500);
 				sp1.play(coins, 1, 1, 0, 0, 1);
 				score+=10;
 			}
