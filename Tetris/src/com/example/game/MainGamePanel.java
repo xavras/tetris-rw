@@ -45,7 +45,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	int MAX_SCORE = 50;
 	public int level = 1;
 	boolean isGameOver = false;
-	Scores s;
 	
 	public MainGamePanel(Context context) throws IOException {
 		super(context);
@@ -56,7 +55,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		sp1 = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
 		flip = sp.load(context, R.raw.flip, 1);
 		coins = sp1.load(context, R.raw.coins, 1);
-		s = new Scores();
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -69,14 +67,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		if(board == null) board = new Board();
 		if(tet == null) createTetrion();
 		Block.bitmap = bitmap;
-		try
-		{
-			s.readScores();
-			Log.i("taggg", s.players[4].name);
+		
 
-		}
-		catch(Exception e)
-		{e.printStackTrace();}
 		thread.setRunning(true);
 		thread.start();
 	}
@@ -161,9 +153,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				
 				
 				/*** HIGH SCORE *****/
-				Log.i("tag", s.players[4].name);
-				//s.init();
-				if(score > s.players[4].score){
+				if(/*score > s.players[4].score*/ score > Scores.players[0].score){
 					Intent in = new Intent();
 					in.setClass(this.getContext(), AddScore.class);
 					this.getContext().startActivity(in);

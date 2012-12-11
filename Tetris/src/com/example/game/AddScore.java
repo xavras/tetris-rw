@@ -25,12 +25,10 @@ public class AddScore extends Activity{
 	EditText et;
 	Button b1;
 	String FILENAME = "scores.txt";
-	Scores s;
 	Player inGame;
 	Player[] newPlayers = new Player[6];
 	
 	public AddScore() throws IOException{
-		s = new Scores();
 		inGame = new Player();
 		for(int i = 0; i < 6; i++)
 			newPlayers[i] = new Player();
@@ -43,14 +41,7 @@ public class AddScore extends Activity{
 		setContentView(R.layout.addscore);
 		et = (EditText)findViewById(R.id.editText1);
 		b1 = (Button)findViewById(R.id.button1);
-		try
-		{
-			s.readScores();
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
+		
 		b1.setOnClickListener(new View.OnClickListener() {
 			
 			
@@ -59,7 +50,6 @@ public class AddScore extends Activity{
 				// TODO Auto-generated method stub
 				try {
 					writeScore();
-					Log.i("tagg", s.players[4].name);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -76,10 +66,10 @@ public class AddScore extends Activity{
 		FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_WORLD_READABLE | Context.MODE_WORLD_WRITEABLE);
 		OutputStreamWriter osw = new OutputStreamWriter(fos);
 		inGame.name = et.getText().toString();
-		inGame.score = MainGamePanel.score;
+		inGame.score = MainThread.scoreToWrite;
 		for(int i = 0; i < 5; i++){
-			newPlayers[i].name = s.players[i].name;
-			newPlayers[i].score = s.players[i].score;
+			newPlayers[i].name = Scores.players[i].name;
+			newPlayers[i].score = Scores.players[i].score;
 		}
 		newPlayers[5].name = inGame.name;
 		newPlayers[5].score = inGame.score;
@@ -89,7 +79,8 @@ public class AddScore extends Activity{
 						 newPlayers[2].name + " " + newPlayers[2].score + "\n" +
 						 newPlayers[3].name + " " + newPlayers[3].score + "\n" +
 						 newPlayers[4].name + " " + newPlayers[4].score + "\n";
-		
+
+		Log.i("tag", Integer.toString(newPlayers[0].score));
 		osw.write(toWrite);
 		osw.flush();
 		osw.close();
@@ -97,10 +88,10 @@ public class AddScore extends Activity{
 	
 	public void sortPlayers(Player[] p){
 		int n = p.length;
+		Player tmp = new Player();
 		do{
 			for(int i = 0; i < n-1; i++)
 				if(p[i].score < p[i+1].score){
-					Player tmp = new Player();
 					tmp.name = p[i].name;
 					tmp.score = p[i].score;
 					p[i].name = p[i+1].name;

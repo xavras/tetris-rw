@@ -1,5 +1,7 @@
 package com.example.game;
 
+import java.io.IOException;
+
 import com.example.game.model.*;
 
 import android.content.Intent;
@@ -18,6 +20,7 @@ public class MainThread extends Thread {
 	private long time_now, time_last;
 	private long speed = 500;//co ile odswieza [ms]
 	public long t = 0;
+	public static int scoreToWrite = 0;
 
 	public MainThread(SurfaceHolder surfaceHolder, MainGamePanel gamePanel) {
 		super();
@@ -56,6 +59,7 @@ public class MainThread extends Thread {
 						{
 							if(gamePanel.isGameOver)//koniec gry, bo sie plansza zapchala
 							{
+								scoreToWrite = gamePanel.score;
 								gamePanel.score = 0;
 								speed = 500;
 								gamePanel.level = 1;
