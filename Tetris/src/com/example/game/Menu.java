@@ -78,9 +78,13 @@ public class Menu extends Activity {
 			Intent i = new Intent("com.example.game.MAINACTIVITY");
 			startActivity(i);
 			break;
-		case R.id.Levels:
-			Intent k = new Intent("com.example.game.LEVELS");
+		case R.id.Modes:
+			Intent k = new Intent("com.example.game.MODES");
 			startActivity(k);
+			break;
+		case R.id.Levels:
+			Intent l = new Intent("com.example.game.LEVELS");
+			startActivity(l);
 			break;
 		case R.id.Scores:
 			Intent j = new Intent("com.example.game.SCORES");
