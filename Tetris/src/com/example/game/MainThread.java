@@ -75,6 +75,7 @@ public class MainThread extends Thread {
 							}
 							gamePanel.resetGame();
 							gamePanel.generateBoardOffset(MainGamePanel.level_offset[MainGamePanel.level - 1]);
+							gamePanel.drawScoreArea(canvas);
 						}
 					}
 					

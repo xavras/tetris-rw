@@ -23,6 +23,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -61,6 +62,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	public ArrayList<Point> clearLineAnimationLines;
 	public long time_now = 0;
 	public long time_last = 0;
+	public Bitmap panel_wynikow;
+	private boolean initFlag = true;
 	
 	public static final int level_offset[] = {0, 0, 0, 5, 5, 5, 10, 10, 10};
 	
@@ -83,6 +86,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 
 	public void surfaceCreated(SurfaceHolder holder) {		
 		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.klocek);
+		panel_wynikow = BitmapFactory.decodeResource(getResources(), R.drawable.panel_wynikow);
 		
 		if(board == null) board = new Board(boardWidth, boardHeight);
 		generateBoardOffset(level_offset[level-1]);
@@ -160,7 +164,11 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		tet.draw(canvas, mainArea);
 		board.draw(canvas, mainArea);
 		
-		drawScoreArea(canvas);
+		if(initFlag == true)
+		{
+			initFlag = false;
+			drawScoreArea(canvas);
+		}
 	}
 
 	public boolean update() {
@@ -245,17 +253,24 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	{
 		float y0 = (canvas.getHeight()-mainArea.bottom)*0.8f+mainArea.bottom;
 		float x0 = (canvas.getHeight()-mainArea.bottom)*0.2f;
+		float x1 = (canvas.getWidth()-x0*3);
+		float x2 = canvas.getWidth()*0.8f;
 		
 		Paint paint = new Paint();
-		paint.setColor(Color.BLACK);
-		canvas.drawRect(0, mainArea.bottom, canvas.getWidth(), canvas.getHeight(), paint);
+		//paint.setColor(Color.BLACK);
+		//canvas.drawRect(0, mainArea.bottom, canvas.getWidth(), canvas.getHeight(), paint);
+		Rect panelRectSrc = new Rect(0,0,panel_wynikow.getWidth(), panel_wynikow.getHeight());
+		RectF panelRectDst = new RectF(0, mainArea.bottom, canvas.getWidth(), canvas.getHeight());
+		canvas.drawBitmap(panel_wynikow, panelRectSrc, panelRectDst, paint);
 		
 		paint.setColor(Color.WHITE);
 		paint.setTextSize((canvas.getHeight() - mainArea.bottom)*0.8f);
 		paint.setAntiAlias(true);
 		
 		canvas.drawText(""+score, x0, y0, paint);
-		
+		canvas.drawText(""+level, x1, y0, paint);
+		paint.setTextSize((canvas.getHeight() - mainArea.bottom)*0.4f);
+		canvas.drawText("level", x2, y0, paint);
 	}
 
 	
@@ -444,6 +459,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			clearLineAnimation = false;
 			clearLineAnimationTime = 0;
 			clearLineAnimationLines.clear();
+			drawScoreArea(canvas);
 		}
 		else//RYSOWANIE animacji
 		{
