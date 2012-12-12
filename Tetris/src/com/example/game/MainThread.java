@@ -22,6 +22,7 @@ public class MainThread extends Thread {
 	public long t = 0;
 	public static int scoreToWrite = 0;
 	public final int level_speed[] = {500, 400, 300, 450, 350, 250, 400, 300, 200};
+	private FPSCounter fpsCounter;
 
 	public MainThread(SurfaceHolder surfaceHolder, MainGamePanel gamePanel) {
 		super();
@@ -29,6 +30,7 @@ public class MainThread extends Thread {
 		this.gamePanel = gamePanel;
 		time_now = time_last = System.currentTimeMillis();
 		speed = level_speed[MainGamePanel.level - 1];//-1 bo levele sa od 1 do 9
+		fpsCounter = new FPSCounter();
 	}
 
 	@Override
@@ -85,6 +87,7 @@ public class MainThread extends Thread {
 						gamePanel.clearLineAnimation(canvas);
 					}
 					
+					fpsCounter.update(canvas);
 				}
 			} finally {
 				if (canvas != null) {
