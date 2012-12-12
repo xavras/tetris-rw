@@ -175,7 +175,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				if(mode == 0)
 				{
 					/*** HIGH SCORE *****/
-					if(/*score > s.players[4].score*/ score > Scores.players[0].score){
+					if(score > Scores.players[4].score){
 						Intent in = new Intent();
 						in.setClass(this.getContext(), AddScore.class);
 						this.getContext().startActivity(in);
