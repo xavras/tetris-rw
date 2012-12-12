@@ -5,46 +5,42 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textViewH"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="Board height" />
+        android:text="Board height"
+        android:textSize="30sp" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textViewW"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView1"
-        android:textSize="30sp"
-        android:text="Board width " />
+        android:text="Board width"
+        android:textSize="30sp" />
 
-    <EditText
-        android:id="@+id/editTextH"
-        android:layout_width="match_parent"
+    <SeekBar
+        android:id="@+id/seekbar1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
         android:layout_toRightOf="@+id/textView1"
-        android:inputType="number"
-        android:text="20" >
+        android:max="100"
+        android:minWidth="250px" />
 
-    </EditText>
-
-    <EditText
-        android:id="@+id/editTextW"
-        android:layout_width="match_parent"
+    <SeekBar
+        android:id="@+id/seekbar2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_toRightOf="@+id/textView2"
-        android:layout_below="@+id/editTextH"
-        android:inputType="number"
-        android:text="10" />
+        android:layout_toRightOf="@+id/textView1"
+        android:layout_below="@+id/seekbar1"
+        android:max="100"
+        android:minWidth="250px" />
 
     <Button
         android:id="@+id/bdone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextW"
+        android:layout_below="@+id/seekbar2"
         android:text="Save and return" />
 
 </RelativeLayout>
