@@ -49,7 +49,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	int flip, coins;
 	Context mycontext;
 	int MAX_SCORE = 50;
-	public int level = 1;
+	public static int level = 1;
 	boolean isGameOver = false;
 	public static int mode = 0;
 	public static int boardWidth = 10;
@@ -62,6 +62,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	public long time_now = 0;
 	public long time_last = 0;
 	
+	public static final int level_offset[] = {0, 0, 0, 5, 5, 5, 10, 10, 10};
+	
 	public MainGamePanel(Context context) throws IOException {
 		super(context);
 		getHolder().addCallback(this);
@@ -71,7 +73,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		sp1 = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
 		flip = sp.load(context, R.raw.flip, 1);
 		coins = sp1.load(context, R.raw.coins, 1);
-		
 		
 		clearLineAnimationLines = new ArrayList<Point>();
 	}
@@ -84,6 +85,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.klocek);
 		
 		if(board == null) board = new Board(boardWidth, boardHeight);
+		generateBoardOffset(level_offset[level-1]);
 		if(tet == null) createTetrion();
 		Block.bitmap = bitmap;
 		
@@ -229,7 +231,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		if(actualLevelScore >= MAX_SCORE)
 		{
 			ret = false;
-			level++;
+			if(level < 9 ) level++;
 			actualLevelScore = 0;
 		}
 		

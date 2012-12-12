@@ -21,13 +21,14 @@ public class MainThread extends Thread {
 	private long speed = 500;//co ile odswieza [ms]
 	public long t = 0;
 	public static int scoreToWrite = 0;
-	
+	public final int level_speed[] = {500, 400, 300, 450, 350, 250, 400, 300, 200};
 
 	public MainThread(SurfaceHolder surfaceHolder, MainGamePanel gamePanel) {
 		super();
 		this.surfaceHolder = surfaceHolder;
 		this.gamePanel = gamePanel;
 		time_now = time_last = System.currentTimeMillis();
+		speed = level_speed[MainGamePanel.level - 1];//-1 bo levele sa od 1 do 9
 	}
 
 	@Override
@@ -69,13 +70,11 @@ public class MainThread extends Thread {
 							}
 							else//nastepny poziom
 							{
-								speed -= speed*0.2; //przyspieszenie o 20%
+								//zmiana predkosci
+								speed = level_speed[MainGamePanel.level - 1];//-1 bo levele sa od 1 do 9
 							}
 							gamePanel.resetGame();
-							if(gamePanel.level == 2)
-							{
-								gamePanel.generateBoardOffset(3);
-							}
+							gamePanel.generateBoardOffset(MainGamePanel.level_offset[MainGamePanel.level - 1]);
 						}
 					}
 					

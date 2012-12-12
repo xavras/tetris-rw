@@ -31,6 +31,7 @@ public class Levels extends ListActivity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				// TODO Auto-generated method stub
+				MainGamePanel.level = arg2+1;
 				switch (arg2) {
 				case 0: {
 					Toast.makeText(getApplicationContext(), "Level " + ((TextView)arg1).getText() + " selected", Toast.LENGTH_SHORT).show();
