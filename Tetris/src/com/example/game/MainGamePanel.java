@@ -461,6 +461,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				actualLevelScore+=10;
 			}
 			score+=(clearLineAnimationLines.size()-1)*10;//bonusowe punkty +10 za ka¿da dodatkowa linie
+			actualLevelScore+=(clearLineAnimationLines.size()-1)*10;
+			
 			clearLineAnimation = false;
 			clearLineAnimationTime = 0;
 			clearLineAnimationLines.clear();
