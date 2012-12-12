@@ -25,7 +25,7 @@ public class Scores extends Activity implements OnClickListener{
 	String FILENAME = "scores.txt";
 	String[] tab = new String[5];
 	String[][] tabb = new String[5][2];
-	static Player[] players = new Player[5];
+	public static Player[] players = new Player[5];
 	
 	public Scores(){
 		for(int i = 0; i < players.length; i++)

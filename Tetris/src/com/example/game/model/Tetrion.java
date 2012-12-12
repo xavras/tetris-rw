@@ -2,6 +2,8 @@ package com.example.game.model;
 
 import java.util.Random;
 
+import com.example.game.MainGamePanel;
+
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -14,6 +16,13 @@ public class Tetrion {
 	public final static int BLOCK_S = 4;
 	public final static int BLOCK_O = 5;
 	public final static int BLOCK_I = 6;
+	public final static int BLOCK_BONUS_1 = 7;//O
+	public final static int BLOCK_BONUS_2 = 8;//OO
+	public final static int BLOCK_BONUS_3 = 9;//OOO
+	public final static int BLOCK_BONUS_4 = 10;//OO
+												//O
+	
+	public static int mode = 0;
 	
 	public Block[][] tet = new Block[4][4];//(1;1) is center
 	public int type;
@@ -32,14 +41,39 @@ public class Tetrion {
 	public Tetrion(int type, int color)
 	{
 		coord[0] = 5;
-		
-		tet[1][1] = new Block(1+coord[0], 1+coord[1], color);//ten sie zawsze zapali
-
-		for(int i=0; i<3; i++)
+		if(mode == 1)
 		{
-			int xg = gen[type][i*2];
-			int yg = gen[type][i*2+1];
-			tet[xg][yg] = new Block(xg+coord[0], yg+coord[1], color);
+			Random random = new Random();
+			int rand = random.nextInt(11);
+			if(rand > 6) type = rand;
+		}
+		
+		if(type <7)
+		{
+			tet[1][1] = new Block(1+coord[0], 1+coord[1], color);//ten sie zawsze zapali
+	
+			for(int i=0; i<3; i++)
+			{
+				int xg = gen[type][i*2];
+				int yg = gen[type][i*2+1];
+				tet[xg][yg] = new Block(xg+coord[0], yg+coord[1], color);
+			}
+		}
+		else//bonusowe klocki
+		{
+			tet[1][1] = new Block(1+coord[0], 1+coord[1], color);//ten sie zawsze zapali
+			if(type >= 8)
+			{
+				tet[1][0] = new Block(1+coord[0], 0+coord[1], color);
+			}
+			if(type == 9)
+			{
+				tet[1][2] = new Block(1+coord[0], 2+coord[1], color);
+			}
+			if(type == 10)
+			{
+				tet[0][1] = new Block(0+coord[0], 1+coord[1], color);
+			}
 		}
 		
 		this.type = type;
@@ -71,7 +105,7 @@ public class Tetrion {
 				if(tet[i][j] != null)
 				{
 					int xx = moveX+tet[i][j].coord[0];
-					if((xx > 9) || (xx < 0))
+					if((xx > MainGamePanel.boardWidth) || (xx < 0))
 					{
 						ret = false;
 						break;
@@ -100,7 +134,7 @@ public class Tetrion {
 			for(int j=0; j<4; j++)
 				if(tet[i][j] != null)
 				{
-					if(tet[i][j].coord[1] >= 20)
+					if(tet[i][j].coord[1] >= MainGamePanel.boardHeight)
 						return true;
 				}
 		return false;
@@ -125,7 +159,7 @@ public class Tetrion {
 			for(int j=0; j<4; j++)
 				if(tet[i][j] != null)
 				{
-					if((tet[i][j].coord[0] < 0) || (tet[i][j].coord[0] >= 10))
+					if((tet[i][j].coord[0] < 0) || (tet[i][j].coord[0] >= MainGamePanel.boardWidth))
 						return true;
 				}
 		return false;

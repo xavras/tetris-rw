@@ -1,6 +1,10 @@
 package com.example.game;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Vector;
 
@@ -18,6 +22,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.RectF;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -38,6 +43,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	Tetrion tet;
 	public static RectF mainArea;
 	public static int score = 0;
+	public static int actualLevelScore = 0;
 	boolean isMove = false;
 	SoundPool sp, sp1;
 	int flip, coins;
@@ -45,6 +51,16 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	int MAX_SCORE = 50;
 	public int level = 1;
 	boolean isGameOver = false;
+	public static int mode = 0;
+	public static int boardWidth = 10;
+	public static int boardHeight = 20;
+	
+	public long clearLineAnimationMaxTime = 500;
+	public long clearLineAnimationTime = 0;
+	public static boolean clearLineAnimation = false;
+	public ArrayList<Point> clearLineAnimationLines;
+	public long time_now = 0;
+	public long time_last = 0;
 	
 	public MainGamePanel(Context context) throws IOException {
 		super(context);
@@ -55,6 +71,9 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		sp1 = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
 		flip = sp.load(context, R.raw.flip, 1);
 		coins = sp1.load(context, R.raw.coins, 1);
+		
+		
+		clearLineAnimationLines = new ArrayList<Point>();
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
@@ -64,10 +83,12 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	public void surfaceCreated(SurfaceHolder holder) {		
 		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.klocek);
 		
-		if(board == null) board = new Board();
+		if(board == null) board = new Board(boardWidth, boardHeight);
 		if(tet == null) createTetrion();
 		Block.bitmap = bitmap;
 		
+		score = 0;
+		actualLevelScore = 0;
 
 		thread.setRunning(true);
 		thread.start();
@@ -151,45 +172,69 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			if(ret == false) {
 				isGameOver = true;
 				
-				
-				/*** HIGH SCORE *****/
-				if(/*score > s.players[4].score*/ score > Scores.players[0].score){
-					Intent in = new Intent();
-					in.setClass(this.getContext(), AddScore.class);
-					this.getContext().startActivity(in);
+				if(mode == 0)
+				{
+					/*** HIGH SCORE *****/
+					if(/*score > s.players[4].score*/ score > Scores.players[0].score){
+						Intent in = new Intent();
+						in.setClass(this.getContext(), AddScore.class);
+						this.getContext().startActivity(in);
+					}
+					else{
+						Intent in = new Intent();
+						in.setClass(this.getContext(),Scores.class);
+						this.getContext().startActivity(in);
+					}
+					
+					thread.setRunning(false);
+					/********************/
 				}
-				else{
-					Intent in = new Intent();
-					in.setClass(this.getContext(),Scores.class);
-					this.getContext().startActivity(in);
+				else//tryb nieskoñczony
+				{
+					resetGame();
 				}
-				
-				thread.setRunning(false);
-				/********************/
+
 			}
 			createTetrion();
 		}
 		
 		//czyszczenie linii
-		for(;;)
+		/*for(;;)
 		{
 			int num = board.checkFullLine();
 			if(num != -1)
 			{
-				board.clearLine(num);
+				clearLineAnimation = true;//utworzenie animacji
+				clearLineAnimationLines.add(new Point(num,0));
+				time_last = System.currentTimeMillis();
+				
 				Vibrator v = (Vibrator)getContext().getSystemService(Context.VIBRATOR_SERVICE);
 				v.vibrate(500);
 				sp1.play(coins, 1, 1, 0, 0, 1);
-				score+=10;
 			}
 			else break;
+		}*/
+		clearLineAnimationLines = board.checkFullLines();
+		if(clearLineAnimationLines.size() != 0)//wlaczamy animacje
+		{
+			clearLineAnimation = true;//utworzenie animacji
+			time_last = System.currentTimeMillis();
+			
+			Vibrator v = (Vibrator)getContext().getSystemService(Context.VIBRATOR_SERVICE);
+			v.vibrate(500);
+			sp1.play(coins, 1, 1, 0, 0, 1);
 		}
 		
-		if(score >= MAX_SCORE*level)
+		
+		if(actualLevelScore >= MAX_SCORE)
 		{
 			ret = false;
 			level++;
+			actualLevelScore = 0;
 		}
+		
+		if(mode == 1)//tryb nieskoñczony
+			ret = true;
 		
 		return ret;
 	}
@@ -220,8 +265,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	
 	public void touchAction(int x, int y)
 	{
-		float wspX = mainArea.width()/10;
-		float wspY = mainArea.height()/20;
+		float wspX = mainArea.width()/boardWidth;
+		float wspY = mainArea.height()/boardHeight;
 		
 		int xm = (int)((x-mainArea.left)/wspX);//pole gdzie zostalo klikniete
 		int ym = (int)((y-mainArea.top)/wspY);
@@ -252,8 +297,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	
 	public void touchActionMove(int x, int y)
 	{
-		float wspX = mainArea.width()/10;
-		float wspY = mainArea.height()/20;
+		float wspX = mainArea.width()/boardWidth;
+		float wspY = mainArea.height()/boardHeight;
 		
 		int xm = (int)((x-mainArea.left)/wspX);//pole gdzie zostalo klikniete
 		int ym = (int)((y-mainArea.top)/wspY);
@@ -278,20 +323,23 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	{
 		for(int i=0; i<3; i++)
 		{
-			tet.update();
-			if(isCollisionWithGround(tet) || isCollisionWithBoard(tet))
+			Tetrion tet_tmp = cloneTetrion();
+			tet_tmp.update();
+			if(isCollisionWithGround(tet_tmp) || isCollisionWithBoard(tet_tmp))
 			{
-				board.addTetrion(tet);
-				createTetrion();
 				break;
+			}
+			else
+			{
+				tet = tet_tmp;
 			}
 		}
 	}
 	
 	private boolean isTetrionMovePossible(int x, int y)
 	{
-		for(int i=0; i<10; i++)
-			for(int j=0; j<20; j++)
+		for(int i=0; i<boardWidth; i++)
+			for(int j=0; j<boardHeight; j++)
 				if(board.board[i][j] != null)
 				{
 					if(tet.checkCollision(i-x, j-y) == true) return false;
@@ -313,7 +361,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 				if(tet.tet[i][j] != null)
 				{
 					tr.tet[i][j] = tet.tet[i][j].clone();
-					
 				}
 		
 		return tr;
@@ -321,8 +368,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	
 	private boolean isCollisionWithBoard(Tetrion tetr)
 	{
-		for(int i=0; i<10; i++)
-			for(int j=0; j<20; j++)
+		for(int i=0; i<boardWidth; i++)
+			for(int j=0; j<boardHeight; j++)
 				if(board.board[i][j] != null)
 				{
 					if(tetr.checkCollision(i, j))
@@ -345,8 +392,75 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	
 	public void resetGame()
 	{
-		board = new Board();
+		board = new Board(boardWidth, boardHeight);
 		createTetrion();
 		isGameOver = false;
+		actualLevelScore = 0;
+	}
+	
+	public void generateBoardOffset(int size)
+	{
+		for(int i=0; i<size; i++)
+		{
+			for(int j=0; j<boardWidth; j++)
+			{
+				board.board[j][boardHeight-i-1]= new Block(j, boardHeight-i-1, Block.WHITE);
+			}
+		}
+		
+		Random random = new Random();
+		for(int i=0; i<size; i++)
+		{
+			for(int j=0; j<5; j++)
+			{
+				board.board[random.nextInt(boardWidth)][boardHeight-i-1] = null;
+			}
+		}
+	}
+	
+	public void clearLineAnimation(Canvas canvas)
+	{
+		time_now = System.currentTimeMillis();
+		if(time_now < time_last)//przeskok MAX_VALUE
+		{
+			clearLineAnimationTime = (Long.MAX_VALUE - time_last) + time_now;
+		}
+		else
+		{
+			clearLineAnimationTime = time_now - time_last;
+		}
+		
+		if(clearLineAnimationTime >= clearLineAnimationMaxTime)//koniec animacji
+		{
+			
+			for(int i=0; i<clearLineAnimationLines.size(); i++)
+			{
+				board.clearLine(clearLineAnimationLines.get(i).x);
+				score+=10;
+				actualLevelScore+=10;
+			}
+			clearLineAnimation = false;
+			clearLineAnimationTime = 0;
+			clearLineAnimationLines.clear();
+		}
+		else//RYSOWANIE animacji
+		{
+			float wspX = mainArea.width()/boardWidth;
+			float wspY = mainArea.height()/boardHeight;
+			
+			Paint paint = new Paint();
+			paint.setColor(Color.WHITE);
+			paint.setAlpha((int)((float)clearLineAnimationTime/(float)clearLineAnimationMaxTime*255.0f));
+			
+			for(int i=0; i<clearLineAnimationLines.size(); i++)
+			{
+				canvas.drawRect(
+						0, 
+						clearLineAnimationLines.get(i).x*wspY, 
+						mainArea.width(), 
+						(clearLineAnimationLines.get(i).x+1)*wspY, 
+						paint);
+			}
+		}
 	}
 }

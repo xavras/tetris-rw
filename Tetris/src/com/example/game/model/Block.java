@@ -1,5 +1,7 @@
 package com.example.game.model;
 
+import com.example.game.MainGamePanel;
+
 import android.graphics.*;
 
 public class Block{
@@ -15,6 +17,7 @@ public class Block{
 	public static final int CYAN = 3;
 	public static final int MAGENTA = 4;
 	public static final int YELLOW = 5;
+	public static final int WHITE = 6;
 	
 	public Block()
 	{
@@ -45,8 +48,11 @@ public class Block{
 			case YELLOW:
 				this.color = Color.YELLOW;
 				break;
+			case WHITE:
+				this.color = Color.WHITE;
+				break;
 			default:
-				this.color = Color.BLUE;	
+				this.color = Color.WHITE;	
 		}
 	}
 	
@@ -55,8 +61,8 @@ public class Block{
 		Paint paint = new Paint();
 		float Width = area.width();
 		float Height = area.height();
-		float wspX = Width/10;
-		float wspY = Height/20;
+		float wspX = Width/MainGamePanel.boardWidth;
+		float wspY = Height/MainGamePanel.boardHeight;
 		paint.setColor(color);
 		canvas.drawRect(
 				area.left+coord[0]*wspX, 
@@ -81,13 +87,13 @@ public class Block{
 	
 	public void touchAction(int x, int y, int screenWidth, int screenHeight)
 	{
-		float wspX = screenWidth/10;
-		float wspY = screenHeight/20;
+		float wspX = screenWidth/MainGamePanel.boardWidth;
+		float wspY = screenHeight/MainGamePanel.boardHeight;
 		
 		int xm = (int)(x/wspX);
 		if((xm < coord[0]) && (coord[0] !=0))
 			coord[0]--;
-		else if((xm > coord[0]) && (coord[0] !=19))
+		else if((xm > coord[0]) && (coord[0] != MainGamePanel.boardHeight-1))
 			coord[0]++;
 	}
 	

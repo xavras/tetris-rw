@@ -21,6 +21,7 @@ public class MainThread extends Thread {
 	private long speed = 500;//co ile odswieza [ms]
 	public long t = 0;
 	public static int scoreToWrite = 0;
+	
 
 	public MainThread(SurfaceHolder surfaceHolder, MainGamePanel gamePanel) {
 		super();
@@ -63,7 +64,6 @@ public class MainThread extends Thread {
 								gamePanel.score = 0;
 								speed = 500;
 								gamePanel.level = 1;
-								this.interrupt();
 								setRunning(false);
 								return;
 							}
@@ -72,10 +72,19 @@ public class MainThread extends Thread {
 								speed -= speed*0.2; //przyspieszenie o 20%
 							}
 							gamePanel.resetGame();
+							if(gamePanel.level == 2)
+							{
+								gamePanel.generateBoardOffset(3);
+							}
 						}
 					}
-
+					
 					gamePanel.render(canvas);
+					if(MainGamePanel.clearLineAnimation)
+					{
+						time_last = time_now;
+						gamePanel.clearLineAnimation(canvas);
+					}
 					
 				}
 			} finally {

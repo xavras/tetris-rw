@@ -1,5 +1,7 @@
 package com.example.game;
 
+import com.example.game.model.Tetrion;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,7 +40,7 @@ public class Modes extends Activity implements OnClickListener, OnCheckedChangeL
 	    editor = settings.edit();
 	    
 
-		switch(settings.getInt("level", 2)){
+		switch(settings.getInt("level", 1)){
 		case 1:
 			easy.setChecked(true);
 			break;
@@ -58,14 +60,20 @@ public class Modes extends Activity implements OnClickListener, OnCheckedChangeL
 		case R.id.rEasy:
 			editor.putInt("level", 1);
 			editor.commit();
+			Tetrion.mode = 0;
+			MainGamePanel.mode = 0;
 			break;
 		case R.id.rMedium:
 			editor.putInt("level", 2);
 			editor.commit();
+			Tetrion.mode = 1;
+			MainGamePanel.mode = 0;
 			break;
 		case R.id.rHard:
 			editor.putInt("level", 3);
 			editor.commit();
+			Tetrion.mode = 0;
+			MainGamePanel.mode = 1;
 			break;
 		}
 	}
