@@ -64,6 +64,10 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	public long time_last = 0;
 	public Bitmap panel_wynikow;
 	private boolean initFlag = true;
+	Rect panelRectSrc;
+	RectF panelRectDst;
+	public Bitmap tlo;
+	public Rect backRectSrc;
 	
 	public static final int level_offset[] = {0, 0, 0, 5, 5, 5, 10, 10, 10};
 	
@@ -87,6 +91,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	public void surfaceCreated(SurfaceHolder holder) {		
 		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.klocek);
 		panel_wynikow = BitmapFactory.decodeResource(getResources(), R.drawable.panel_wynikow);
+		tlo = BitmapFactory.decodeResource(getResources(), R.drawable.metal_back);
+		backRectSrc = new Rect(0,0, tlo.getWidth(), tlo.getHeight()); 
 		
 		if(board == null) board = new Board(boardWidth, boardHeight);
 		generateBoardOffset(level_offset[level-1]);
@@ -160,7 +166,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		Paint paint = new Paint();
 		paint.setColor(Color.GRAY);
 		
-		canvas.drawRect(mainArea, paint);
+		//canvas.drawRect(mainArea, paint);
+		canvas.drawBitmap(tlo, backRectSrc, mainArea, paint);
 		tet.draw(canvas, mainArea);
 		board.draw(canvas, mainArea);
 		
@@ -259,8 +266,8 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		Paint paint = new Paint();
 		//paint.setColor(Color.BLACK);
 		//canvas.drawRect(0, mainArea.bottom, canvas.getWidth(), canvas.getHeight(), paint);
-		Rect panelRectSrc = new Rect(0,0,panel_wynikow.getWidth(), panel_wynikow.getHeight());
-		RectF panelRectDst = new RectF(0, mainArea.bottom, canvas.getWidth(), canvas.getHeight());
+		if(panelRectSrc == null) panelRectSrc = new Rect(0,0,panel_wynikow.getWidth(), panel_wynikow.getHeight());
+		if(panelRectDst == null) panelRectDst = new RectF(0, mainArea.bottom, canvas.getWidth(), canvas.getHeight());
 		canvas.drawBitmap(panel_wynikow, panelRectSrc, panelRectDst, paint);
 		
 		paint.setColor(Color.WHITE);
