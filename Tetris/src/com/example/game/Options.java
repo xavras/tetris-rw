@@ -32,8 +32,8 @@ public class Options extends Activity{
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
 				// TODO Auto-generated method stub
-				t1.setText("Board height: " + progress);
-				MainGamePanel.boardHeight = progress;
+				t1.setText("Board height " + progress*10);
+				MainGamePanel.boardHeight = progress*10;
 			}
 
 			@Override
@@ -45,7 +45,7 @@ public class Options extends Activity{
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
-				
+				seekBar.setSecondaryProgress(seekBar.getProgress()); // set the shade of the previous value.
 			}
 			
 		});
@@ -55,8 +55,8 @@ public class Options extends Activity{
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
 				// TODO Auto-generated method stub
-				t2.setText("Board width: " + progress);
-				MainGamePanel.boardWidth = progress;
+				t2.setText("Board width " + progress*10);
+				MainGamePanel.boardWidth = progress*10;
 			}
 
 			@Override
@@ -68,7 +68,7 @@ public class Options extends Activity{
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				// TODO Auto-generated method stub
-				
+				seekBar.setSecondaryProgress(seekBar.getProgress()); // set the shade of the previous value.
 			}
 			
 		});

@@ -8,39 +8,43 @@
         android:id="@+id/textViewH"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="30px"
+        android:paddingTop="5px"
         android:text="Board height"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/textViewW"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textViewH"
+        android:layout_marginRight="30px"
+        android:paddingTop="5px"
         android:text="Board width"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
 
     <SeekBar
         android:id="@+id/seekbar1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/textViewH"
-        android:max="100"
+        android:max="10"
         android:minWidth="250px" />
 
     <SeekBar
         android:id="@+id/seekbar2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/textViewW"
         android:layout_below="@+id/seekbar1"
-        android:max="100"
+        android:layout_toRightOf="@+id/textViewW"
+        android:max="10"
         android:minWidth="250px" />
 
     <Button
         android:id="@+id/bdone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/seekbar2"
+        android:layout_below="@+id/textViewW"
         android:text="Save and return" />
 
 </RelativeLayout>
