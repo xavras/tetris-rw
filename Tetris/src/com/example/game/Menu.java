@@ -1,9 +1,12 @@
 package com.example.game;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
 import android.app.Activity;
@@ -22,7 +25,22 @@ import android.widget.Toast;
 public class Menu extends Activity {
 	
 	public static final String PREFS_NAME = "MyPrefsFile";
+	String[] tab = new String[5];
+	String[][] tabb = new String[5][2];
+	Scores s;
 
+	
+	public Menu(){
+		s = new Scores();
+		for(int i = 0; i < 5; i++)
+			tab[i] = new String();
+		for(int i = 0; i < 5; i++){
+			tabb[i] = new String[2];
+			for(int j = 0; j < 2; j++)
+				tabb[i][j] = new String();
+		}
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,6 +80,32 @@ public class Menu extends Activity {
 				e.printStackTrace();
 			}
 		}
+		//konieczny odczyt
+		FileInputStream fis = null;
+		try {
+			fis = openFileInput("scores.txt");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		InputStreamReader isr = new InputStreamReader(fis);
+		int j;
+		ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+		try {
+			while((j = isr.read()) != -1){
+				bytes.write(j);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		tab = bytes.toString().split("\n");
+		
+		for(int i = 0; i < tab.length; i++){
+			tabb[i] = tab[i].split(" ");
+			s.players[i].name = tabb[i][0];
+			s.players[i].score = Integer.parseInt(tabb[i][1]);
+		}
 	}
 
 	@Override
@@ -89,6 +133,10 @@ public class Menu extends Activity {
 		case R.id.Scores:
 			Intent j = new Intent("com.example.game.SCORES");
 			startActivity(j);
+			break;
+		case R.id.Options:
+			Intent m = new Intent("com.example.game.OPTIONS");
+			startActivity(m);
 			break;
 		case R.id.Quit:
 			finish();

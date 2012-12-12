@@ -4,6 +4,7 @@
     <item android:id="@+id/Modes" android:title="modes"></item>
     <item android:id="@+id/Levels" android:title="levels"></item>
     <item android:id="@+id/Scores" android:title="scores"></item>
+    <item android:id="@+id/Options" android:title="options"></item>
     <item android:id="@+id/Quit" android:title="quit"></item>
     
 

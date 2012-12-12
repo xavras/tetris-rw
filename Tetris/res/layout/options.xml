@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="Board height" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:textSize="30sp"
+        android:text="Board width " />
+
+    <EditText
+        android:id="@+id/editTextH"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_toRightOf="@+id/textView1"
+        android:inputType="number"
+        android:text="20" >
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/editTextW"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:layout_toRightOf="@+id/textView2"
+        android:layout_below="@+id/editTextH"
+        android:inputType="number"
+        android:text="10" />
+
+    <Button
+        android:id="@+id/bdone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextW"
+        android:text="Save and return" />
+
+</RelativeLayout>
