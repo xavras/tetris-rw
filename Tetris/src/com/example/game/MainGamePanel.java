@@ -126,27 +126,30 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		float y_rotate = getHeight()*0.1f;
 		float x_rotate = getWidth()*0.5f;
 		
-		switch(event.getAction()){
-		case MotionEvent.ACTION_MOVE:
-			if((y < mainArea.bottom))
-			{
-				touchActionMove(x, y);
-			}
-			break;
-		
-		case MotionEvent.ACTION_DOWN:
-			if(y >= mainArea.bottom)
-			{
-				if(x <= x_rotate) touchActionSpeedUp();
-			
-				else if(x > x_rotate)
+		synchronized(tet)
+		{
+			switch(event.getAction()){
+			case MotionEvent.ACTION_MOVE:
+				if((y < mainArea.bottom))
 				{
-					touchActionRotate();
-					sp.play(flip, 1, 1, 0, 0, 1);
+					touchActionMove(x, y);
 				}
+				break;
+			
+			case MotionEvent.ACTION_DOWN:
+				if(y >= mainArea.bottom)
+				{
+					if(x <= x_rotate) touchActionSpeedUp();
+				
+					else if(x > x_rotate)
+					{
+						touchActionRotate();
+						sp.play(flip, 1, 1, 0, 0, 1);
+					}
+				}
+				break;
 			}
-			break;
-		}		
+		}
 		
 		return true;
 	}

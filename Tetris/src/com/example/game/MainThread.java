@@ -58,25 +58,28 @@ public class MainThread extends Thread {
 						time_last = time_now;
 						
 						//TUTAJ BEDA UPDATE'Y, ZALEZNE OD CZASU
-						boolean kontynuuj = gamePanel.update();
-						if(kontynuuj == false)
+						synchronized(gamePanel.tet)
 						{
-							if(gamePanel.isGameOver)//koniec gry, bo sie plansza zapchala
+							boolean kontynuuj = gamePanel.update();
+							if(kontynuuj == false)
 							{
-								scoreToWrite = gamePanel.score;
-								gamePanel.score = 0;
-								speed = 500;
-								gamePanel.level = 1;
-								setRunning(false);
-								return;
+								if(gamePanel.isGameOver)//koniec gry, bo sie plansza zapchala
+								{
+									scoreToWrite = gamePanel.score;
+									gamePanel.score = 0;
+									speed = 500;
+									gamePanel.level = 1;
+									setRunning(false);
+									return;
+								}
+								else//nastepny poziom
+								{
+									//zmiana predkosci
+									speed = level_speed[MainGamePanel.level - 1];//-1 bo levele sa od 1 do 9
+								}
+								gamePanel.resetGame();
+								gamePanel.generateBoardOffset(MainGamePanel.level_offset[MainGamePanel.level - 1]);
 							}
-							else//nastepny poziom
-							{
-								//zmiana predkosci
-								speed = level_speed[MainGamePanel.level - 1];//-1 bo levele sa od 1 do 9
-							}
-							gamePanel.resetGame();
-							gamePanel.generateBoardOffset(MainGamePanel.level_offset[MainGamePanel.level - 1]);
 						}
 					}
 					
