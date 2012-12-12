@@ -49,7 +49,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	SoundPool sp, sp1;
 	int flip, coins;
 	Context mycontext;
-	int MAX_SCORE = 50;
+	int MAX_SCORE = 200;
 	public static int level = 1;
 	boolean isGameOver = false;
 	public static int mode = 0;
