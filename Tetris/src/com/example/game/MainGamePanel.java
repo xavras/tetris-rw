@@ -63,7 +63,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 	public long time_now = 0;
 	public long time_last = 0;
 	public Bitmap panel_wynikow;
-	private boolean initFlag = true;
 	Rect panelRectSrc;
 	RectF panelRectDst;
 	public Bitmap tlo;
@@ -170,12 +169,7 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 		canvas.drawBitmap(tlo, backRectSrc, mainArea, paint);
 		tet.draw(canvas, mainArea);
 		board.draw(canvas, mainArea);
-		
-		if(initFlag == true)
-		{
-			initFlag = false;
-			drawScoreArea(canvas);
-		}
+		drawScoreArea(canvas);
 	}
 
 	public boolean update() {
@@ -466,7 +460,6 @@ public class MainGamePanel extends SurfaceView implements SurfaceHolder.Callback
 			clearLineAnimation = false;
 			clearLineAnimationTime = 0;
 			clearLineAnimationLines.clear();
-			drawScoreArea(canvas);
 		}
 		else//RYSOWANIE animacji
 		{
