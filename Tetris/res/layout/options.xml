@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/textViewH"
-        android:max="6"
+        android:max="3"
         android:minWidth="250px" />
 
     <SeekBar
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/seekbar1"
         android:layout_toRightOf="@+id/textViewW"
-        android:max="3"
+        android:max="25"
         android:minWidth="250px" />
 
     <Button

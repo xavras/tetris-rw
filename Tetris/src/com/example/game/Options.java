@@ -32,11 +32,11 @@ public class Options extends Activity{
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
 				// TODO Auto-generated method stub
-				t1.setText("Board height " + progress*10);
-				MainGamePanel.boardHeight = progress*10;
-				t2.setText("Board width " + progress*5);
-				MainGamePanel.boardWidth = progress*5;
-				s2.setProgress(progress/2);
+				t1.setText("Board height " + (progress*10+20));
+				MainGamePanel.boardHeight = progress*10+20;
+				t2.setText("Board width " + (progress*5+10));
+				MainGamePanel.boardWidth = progress*5+10;
+				s2.setProgress(progress*5+10);
 			}
 
 			@Override
