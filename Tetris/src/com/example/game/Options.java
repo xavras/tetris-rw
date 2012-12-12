@@ -33,6 +33,7 @@ public class Options extends Activity{
 					boolean fromUser) {
 				// TODO Auto-generated method stub
 				t1.setText("Board height: " + progress);
+				MainGamePanel.boardHeight = progress;
 			}
 
 			@Override
@@ -55,6 +56,7 @@ public class Options extends Activity{
 					boolean fromUser) {
 				// TODO Auto-generated method stub
 				t2.setText("Board width: " + progress);
+				MainGamePanel.boardWidth = progress;
 			}
 
 			@Override
