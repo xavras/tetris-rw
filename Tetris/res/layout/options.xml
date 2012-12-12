@@ -15,7 +15,7 @@
         android:id="@+id/textViewW"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/textViewH"
         android:text="Board width"
         android:textSize="30sp" />
 
@@ -23,7 +23,7 @@
         android:id="@+id/seekbar1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/textView1"
+        android:layout_toRightOf="@+id/textViewW"
         android:max="100"
         android:minWidth="250px" />
 
