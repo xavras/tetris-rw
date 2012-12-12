@@ -46,7 +46,7 @@ public class Menu extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.menu);
 		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-		int medium = settings.getInt("mediumLevel", 2);
+		int medium = settings.getInt("mediumLevel", 1);
 		
 		// pierwszy zapis
 		File file = getBaseContext().getFileStreamPath("scores.txt");
